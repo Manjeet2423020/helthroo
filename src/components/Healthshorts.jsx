@@ -1,0 +1,110 @@
+import short1 from "../assets/short1.jpg";
+import short2 from "../assets/short2.jpg";
+import short3 from "../assets/short3.jpg";
+import short4 from "../assets/short4.jpg";
+import { FiBookmark, FiShare2, FiChevronDown, FiChevronLeft, FiChevronRight } from "react-icons/fi";
+
+const HealthShorts = () => {
+  const shortsData = [
+    {
+      id: 1,
+      image: short1,
+      tag: "INFRASTRUCTURE",
+      title: "'Quality Health Facilities Are the Need of the Hour'",
+      desc: "Gorakhpur: CM Yogi said the healthcare sector today needs quality healthcare facilities rather than just funding.",
+    },
+    {
+      id: 2,
+      image: short2,
+      tag: "POLICY",
+      title: "AIIMS Implements New Social Media Policy",
+      desc: "AIIMS New Delhi has implemented a new social media policy with immediate effect, outlining rules for staff and students.",
+    },
+    {
+      id: 3,
+      image: short3,
+      tag: "DIGITAL HEALTH",
+      title: "All Health Services Now in One App",
+      desc: "Union Health Minister JP Nadda will launch Aarogya Setu 2.0, integrating all medical directories and services.",
+    },
+    {
+      id: 4,
+      image: short4,
+      tag: "NUTRITION",
+      title: "The Bitter Truth Behind 'No Added Sugar' Labels",
+      desc: "FSSAI intensified scrutiny of misleading food labels, issuing strict guidelines on sugar-free claims.",
+    },
+  ];
+
+  return (
+    <section className="px-[10%] py-16 bg-transparent">
+      {/* Heading */}
+      <div className="flex items-center justify-between">
+        <div className="text-left">
+          <h2 className="text-4xl font-black text-[#13344A] relative inline-block font-heading">
+            Health Shorts
+            <span className="absolute left-0 bottom-1 w-full h-2.5 bg-brand-accent/55 -z-10 rounded"></span>
+          </h2>
+          <p className="text-slate-500 text-lg mt-3 font-medium">
+            Quick health shorts to keep you informed in seconds.
+          </p>
+        </div>
+
+        {/* Navigation Buttons */}
+        <div className="flex gap-3">
+          <button className="w-11 h-11 rounded-full border border-slate-200 flex items-center justify-center text-slate-400 hover:border-brand-mint hover:bg-brand-mint/5 hover:text-brand-cyan transition-all duration-200">
+            <FiChevronLeft size={20} />
+          </button>
+          <button className="w-11 h-11 rounded-full border border-brand-mint flex items-center justify-center text-brand-cyan hover:bg-brand-cyan hover:text-white transition-all duration-200">
+            <FiChevronRight size={20} />
+          </button>
+        </div>
+      </div>
+
+      {/* Cards Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-10">
+        {shortsData.map((item) => (
+          <div key={item.id} className="group border border-slate-100 bg-white rounded-2xl overflow-hidden shadow-premium shadow-hover cursor-pointer flex flex-col justify-between h-full">
+            <div>
+              {/* Image with Category Badge */}
+              <div className="relative h-48 overflow-hidden">
+                <img src={item.image} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <span className="absolute top-4 left-4 bg-brand-dark/85 text-brand-accent px-2.5 py-0.5 text-3xs font-extrabold tracking-widest rounded-md backdrop-blur-sm">
+                  {item.tag}
+                </span>
+              </div>
+
+              {/* Content */}
+              <div className="p-5 text-left">
+                <h3 className="font-extrabold text-base text-slate-800 leading-snug font-heading group-hover:text-brand-cyan transition-colors duration-200 line-clamp-2">
+                  {item.title}
+                </h3>
+                <p className="text-slate-500 mt-3 text-xs leading-relaxed line-clamp-3">
+                  {item.desc}
+                </p>
+              </div>
+            </div>
+
+            {/* Bottom Actions */}
+            <div className="px-5 pb-5 pt-3 border-t border-slate-50 flex items-center justify-between">
+              <button className="flex items-center gap-1 text-slate-400 hover:text-brand-cyan transition-colors duration-200">
+                <FiChevronDown size={18} />
+                <span className="text-2xs font-extrabold tracking-wider">READ MORE</span>
+              </button>
+              <div className="flex gap-2">
+                <button className="w-8 h-8 rounded-full bg-slate-50 text-slate-500 hover:bg-brand-mint/10 hover:text-brand-cyan flex items-center justify-center transition-all duration-200">
+                  <FiBookmark size={14} />
+                </button>
+                <button className="w-8 h-8 rounded-full bg-slate-50 text-slate-500 hover:bg-brand-mint/10 hover:text-brand-cyan flex items-center justify-center transition-all duration-200">
+                  <FiShare2 size={14} />
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+};
+
+export default HealthShorts;
