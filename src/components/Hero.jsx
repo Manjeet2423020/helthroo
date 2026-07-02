@@ -1,6 +1,7 @@
-import { useState } from "react";
-import { FiWind, FiSun, FiCheckCircle } from "react-icons/fi";
+import { useState, useRef, useEffect } from "react";
+import { FiWind, FiCheckCircle } from "react-icons/fi";
 import { FaArrowRight } from "react-icons/fa6";
+import gsap from "gsap";
 import hero1 from "../assets/hero1.jpg";
 import hero2 from "../assets/hero2.jpg";
 import hero3 from "../assets/hero3.jpg";
@@ -19,6 +20,19 @@ const Hero = () => {
   const [selectedCity, setSelectedCity] = useState("Delhi");
   const [voted, setVoted] = useState(false);
   const [votePercentages, setVotePercentages] = useState({ lessThan1: 32, oneToTwo: 48, twoPlus: 20 });
+  const headingRef = useRef(null);
+
+  useEffect(() => {
+    // Reveal text mask animate-in
+    const masks = headingRef.current?.querySelectorAll(".text-mask");
+    if (masks) {
+      gsap.fromTo(
+        headingRef.current.querySelectorAll(".text-mask-span"),
+        { translateY: "105%" },
+        { translateY: "0%", duration: 1.2, ease: "power4.out", stagger: 0.1 }
+      );
+    }
+  }, []);
 
   const handleVote = (option) => {
     if (voted) return;
@@ -33,144 +47,202 @@ const Hero = () => {
     });
   };
 
+  const handleMouseMove = (e) => {
+    const card = e.currentTarget;
+    const box = card.getBoundingClientRect();
+    const x = e.clientX - box.left - box.width / 2;
+    const y = e.clientY - box.top - box.height / 2;
+    card.style.transform = `perspective(1000px) rotateX(${-y / 15}deg) rotateY(${x / 15}deg) translateY(-6px)`;
+    
+    const shine = card.querySelector(".card-shine");
+    if (shine) {
+      shine.style.left = `${e.clientX - box.left - 150}px`;
+      shine.style.top = `${e.clientY - box.top - 150}px`;
+      shine.style.opacity = "0.15";
+    }
+  };
+
+  const handleMouseLeave = (e) => {
+    const card = e.currentTarget;
+    card.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)";
+    const shine = card.querySelector(".card-shine");
+    if (shine) {
+      shine.style.opacity = "0";
+    }
+  };
+
   const currentAQI = AQI_DATA[selectedCity];
 
   return (
     <div className="w-full">
       {/* Top Hero Section */}
-      <section className="px-[10%] py-8">
+      <section className="px-[5%] md:px-[10%] py-8">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Left Big Card */}
-          <div className="relative lg:col-span-2 h-[520px] rounded-3xl overflow-hidden group shadow-premium shadow-hover cursor-pointer border border-white/20 dark:border-slate-800/40">
+          
+          {/* Left Big Card with 3D Tilt & Shine */}
+          <div
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+            className="relative lg:col-span-2 h-[520px] rounded-3xl overflow-hidden group shadow-premium transition-all duration-350 cursor-pointer border border-white/20 dark:border-slate-800/40"
+          >
+            <div className="card-shine absolute w-[300px] h-[300px] bg-white rounded-full blur-3xl pointer-events-none opacity-0 transition-opacity duration-300 z-15"></div>
             <img
               src={hero1}
               alt="National Pulse Polio Campaign"
-              className="w-full h-full object-cover group-hover:scale-105 duration-700 ease-out"
+              className="w-full h-full object-cover group-hover:scale-103 duration-700 ease-out"
             />
             {/* Elegant overlay gradient */}
-            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/35 to-transparent"></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/35 to-transparent z-10"></div>
 
-            <div className="absolute bottom-8 left-8 right-8 text-left">
-              <span className="bg-brand-mint text-brand-dark px-3 py-1 text-[10px] font-black tracking-widest rounded-md uppercase">
+            <div className="absolute bottom-8 left-8 right-8 text-left z-20">
+              <span className="bg-brand-mint text-brand-dark px-3.5 py-1.5 text-[9px] font-black tracking-widest rounded-md uppercase shadow-sm">
                 National
               </span>
-              <h1 className="text-white text-3xl md:text-4xl font-black mt-4 leading-tight font-heading">
-                National Pulse Polio Campaign Launched, Polio Drops Given to Children Across the Country
-              </h1>
-              <p className="text-slate-300 text-xs mt-4 font-semibold">Jun 28, 2026</p>
+              <div ref={headingRef} className="mt-4">
+                <h1 className="text-white text-2.5xl md:text-3.5xl font-black leading-tight font-heading select-none">
+                  <span className="text-mask block"><span className="text-mask-span">National Pulse Polio Campaign Launched,</span></span>
+                  <span className="text-mask block"><span className="text-mask-span">Polio Drops Given to Children Across the Country</span></span>
+                </h1>
+              </div>
+              <p className="text-slate-300 text-[11px] mt-4 font-semibold tracking-wide">Jun 28, 2026</p>
             </div>
           </div>
 
-          {/* Right Side 2x2 Grid */}
+          {/* Right Side 2x2 Grid with Tilt */}
           <div className="grid grid-cols-2 gap-4 h-[520px]">
             {/* Card 1 */}
-            <div className="relative rounded-2xl overflow-hidden group shadow-premium shadow-hover cursor-pointer border border-white/20 dark:border-slate-800/40">
+            <div
+              onMouseMove={handleMouseMove}
+              onMouseLeave={handleMouseLeave}
+              className="relative rounded-2xl overflow-hidden group shadow-premium transition-all duration-350 cursor-pointer border border-white/20 dark:border-slate-800/40"
+            >
+              <div className="card-shine absolute w-[200px] h-[200px] bg-white rounded-full blur-3xl pointer-events-none opacity-0 transition-opacity duration-300 z-15"></div>
               <img
                 src={hero2}
                 alt="Mann Ki Baat"
-                className="w-full h-full object-cover group-hover:scale-105 duration-700"
+                className="w-full h-full object-cover group-hover:scale-103 duration-700"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent"></div>
-              <div className="absolute bottom-4 left-4 right-4 text-left">
-                <h2 className="text-white font-bold text-xs md:text-sm leading-snug font-heading">
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent z-10"></div>
+              <div className="absolute bottom-4 left-4 right-4 text-left z-20">
+                <h2 className="text-white font-black text-xs md:text-[13px] leading-snug font-heading">
                   PM Modi Highlights Birds, Yoga and Farmers in the 135th Episode
                 </h2>
-                <p className="text-slate-300 text-[10px] mt-2 font-semibold">Jun 28, 2026</p>
+                <p className="text-slate-450 text-[9px] mt-2 font-bold">Jun 28, 2026</p>
               </div>
             </div>
 
             {/* Card 2 */}
-            <div className="relative rounded-2xl overflow-hidden group shadow-premium shadow-hover cursor-pointer border border-white/20 dark:border-slate-800/40">
+            <div
+              onMouseMove={handleMouseMove}
+              onMouseLeave={handleMouseLeave}
+              className="relative rounded-2xl overflow-hidden group shadow-premium transition-all duration-350 cursor-pointer border border-white/20 dark:border-slate-800/40"
+            >
+              <div className="card-shine absolute w-[200px] h-[200px] bg-white rounded-full blur-3xl pointer-events-none opacity-0 transition-opacity duration-300 z-15"></div>
               <img
                 src={hero3}
                 alt="Aarogya Setu 2.0"
-                className="w-full h-full object-cover group-hover:scale-105 duration-700"
+                className="w-full h-full object-cover group-hover:scale-103 duration-700"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent"></div>
-              <div className="absolute bottom-4 left-4 right-4 text-left">
-                <h2 className="text-white font-bold text-xs md:text-sm leading-snug font-heading">
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent z-10"></div>
+              <div className="absolute bottom-4 left-4 right-4 text-left z-20">
+                <h2 className="text-white font-black text-xs md:text-[13px] leading-snug font-heading">
                   Aarogya Setu 2.0: JP Nadda to Launch India's Unified Platform
                 </h2>
-                <p className="text-slate-300 text-[10px] mt-2 font-semibold">Jun 28, 2026</p>
+                <p className="text-slate-455 text-[9px] mt-2 font-bold">Jun 28, 2026</p>
               </div>
             </div>
 
             {/* Card 3 */}
-            <div className="relative rounded-2xl overflow-hidden group shadow-premium shadow-hover cursor-pointer border border-white/20 dark:border-slate-800/40">
+            <div
+              onMouseMove={handleMouseMove}
+              onMouseLeave={handleMouseLeave}
+              className="relative rounded-2xl overflow-hidden group shadow-premium transition-all duration-350 cursor-pointer border border-white/20 dark:border-slate-800/40"
+            >
+              <div className="card-shine absolute w-[200px] h-[200px] bg-white rounded-full blur-3xl pointer-events-none opacity-0 transition-opacity duration-300 z-15"></div>
               <img
                 src={hero4}
                 alt="Pharma Reforms"
-                className="w-full h-full object-cover group-hover:scale-105 duration-700"
+                className="w-full h-full object-cover group-hover:scale-103 duration-700"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent"></div>
-              <div className="absolute bottom-4 left-4 right-4 text-left">
-                <h2 className="text-white font-bold text-xs md:text-sm leading-snug font-heading">
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent z-10"></div>
+              <div className="absolute bottom-4 left-4 right-4 text-left z-20">
+                <h2 className="text-white font-black text-xs md:text-[13px] leading-snug font-heading">
                   No Criminal Action for Minor Technical Violations: Reforms
                 </h2>
-                <p className="text-slate-300 text-[10px] mt-2 font-semibold">Jun 27, 2026</p>
+                <p className="text-slate-455 text-[9px] mt-2 font-bold">Jun 27, 2026</p>
               </div>
             </div>
 
             {/* Card 4 */}
-            <div className="relative rounded-2xl overflow-hidden group shadow-premium shadow-hover cursor-pointer border border-white/20 dark:border-slate-800/40">
+            <div
+              onMouseMove={handleMouseMove}
+              onMouseLeave={handleMouseLeave}
+              className="relative rounded-2xl overflow-hidden group shadow-premium transition-all duration-350 cursor-pointer border border-white/20 dark:border-slate-800/40"
+            >
+              <div className="card-shine absolute w-[200px] h-[200px] bg-white rounded-full blur-3xl pointer-events-none opacity-0 transition-opacity duration-300 z-15"></div>
               <img
                 src={hero5}
                 alt="Government Doctors"
-                className="w-full h-full object-cover group-hover:scale-105 duration-700"
+                className="w-full h-full object-cover group-hover:scale-103 duration-700"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent"></div>
-              <div className="absolute bottom-4 left-4 right-4 text-left">
-                <h2 className="text-white font-bold text-xs md:text-sm leading-snug font-heading">
+              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent z-10"></div>
+              <div className="absolute bottom-4 left-4 right-4 text-left z-20">
+                <h2 className="text-white font-black text-xs md:text-[13px] leading-snug font-heading">
                   Government Doctors Doing Private Practice is a Concern: SC
                 </h2>
-                <p className="text-slate-300 text-[10px] mt-2 font-semibold">Jun 25, 2026</p>
+                <p className="text-slate-455 text-[9px] mt-2 font-bold">Jun 25, 2026</p>
               </div>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Bottom Main Content Block - Now formatted as floating glass panel */}
-      <section className="mx-[10%] mb-12 glass-panel p-8 md:p-12 rounded-3xl shadow-premium border border-slate-200/40 dark:border-slate-800/30">
+      {/* Bottom Main Content Block */}
+      <section className="mx-[5%] md:mx-[10%] mb-12 glass-panel p-6 md:p-12 rounded-3xl shadow-premium border border-slate-200/40 dark:border-slate-800/30">
         <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
           
           {/* Left Column (Featured News article) */}
-          <div className="lg:col-span-6 relative rounded-2xl overflow-hidden group shadow-premium shadow-hover cursor-pointer h-[580px] border border-white/20 dark:border-slate-800/40">
+          <div
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+            className="lg:col-span-6 relative rounded-2xl overflow-hidden group shadow-premium transition-all duration-350 cursor-pointer h-[580px] border border-white/20 dark:border-slate-800/40"
+          >
+            <div className="card-shine absolute w-[300px] h-[300px] bg-white rounded-full blur-3xl pointer-events-none opacity-0 transition-opacity duration-300 z-15"></div>
             <img
               src={hero6}
               alt="Health Awareness"
-              className="w-full h-full object-cover group-hover:scale-105 duration-700"
+              className="w-full h-full object-cover group-hover:scale-103 duration-700"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent"></div>
+            <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent z-10"></div>
             
-            <div className="absolute inset-0 flex flex-col justify-between p-8 text-left">
+            <div className="absolute inset-0 flex flex-col justify-between p-8 text-left z-20">
               {/* Card Tag */}
               <div className="flex items-center gap-3">
                 <span className="bg-brand-cyan text-white px-3.5 py-1 text-[10px] font-black tracking-widest rounded uppercase">
                   National
                 </span>
-                <span className="text-slate-300 text-[10px] font-black tracking-wider">
+                <span className="text-slate-350 text-[10px] font-black tracking-wider">
                   2 MIN READ
                 </span>
               </div>
 
               {/* Title & Preview */}
               <div>
-                <h2 className="text-white text-2xl md:text-3xl font-black leading-tight font-heading">
+                <h2 className="text-white text-2.5xl md:text-3xl font-black leading-tight font-heading">
                   Perspective on Health Has Changed, Focus Now on Prevention and Better Lifestyle Along with Treatment
                 </h2>
-                <p className="text-slate-300 mt-4 text-xs leading-relaxed line-clamp-3 font-semibold">
+                <p className="text-slate-350 mt-4 text-xs leading-relaxed line-clamp-3 font-medium">
                   Health Awareness: Health is the foundation of a strong and developed nation. When citizens are healthy, productivity increases, economic growth accelerates, and community resilience strengthens...
                 </p>
 
                 {/* Author Info */}
                 <div className="flex items-center gap-3 mt-6 border-t border-white/10 pt-4">
-                  <div className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center font-bold text-white uppercase text-sm border border-white/10">
+                  <div className="w-10 h-10 rounded-full bg-slate-850 flex items-center justify-center font-black text-white uppercase text-xs border border-white/10">
                     KS
                   </div>
                   <div>
-                    <h4 className="text-white text-xs font-bold capitalize">Kavita Singh</h4>
-                    <p className="text-slate-400 text-[10px] font-semibold">Health Correspondent</p>
+                    <h4 className="text-white text-xs font-black capitalize">Kavita Singh</h4>
+                    <p className="text-slate-400 text-[10px] font-bold">Health Correspondent</p>
                   </div>
                 </div>
               </div>
@@ -187,42 +259,42 @@ const Hero = () => {
             {/* List Items */}
             <div className="divide-y divide-slate-200/40 dark:divide-slate-800/40 flex-1 flex flex-col justify-around bg-transparent">
               {/* Item 1 */}
-              <div className="flex gap-4 p-5 hover:bg-white/30 dark:hover:bg-slate-800/20 transition-colors duration-200 cursor-pointer text-left">
+              <div className="flex gap-4 p-5 hover:bg-white/30 dark:hover:bg-slate-800/20 transition-colors duration-200 cursor-pointer text-left group">
                 <img src={card1} alt="" className="w-20 h-20 rounded-xl object-cover shrink-0 shadow-sm border border-white/10" />
                 <div className="flex flex-col justify-center">
                   <span className="text-[9px] font-black tracking-widest text-brand-cyan dark:text-brand-mint uppercase">National</span>
                   <h4 className="mt-1 text-xs font-bold text-slate-800 dark:text-slate-200 leading-snug line-clamp-2">
                     Government Takes Major Step to Improve Healthcare Facilities
                   </h4>
-                  <button className="flex items-center gap-1.5 mt-2 text-brand-cyan dark:text-brand-mint font-black text-[10px] hover:translate-x-1 duration-200 uppercase tracking-widest">
+                  <button className="flex items-center gap-1.5 mt-2 text-brand-cyan dark:text-brand-mint font-black text-[10px] group-hover:translate-x-1 duration-200 uppercase tracking-widest cursor-pointer">
                     READ MORE <FaArrowRight size={8} />
                   </button>
                 </div>
               </div>
 
               {/* Item 2 */}
-              <div className="flex gap-4 p-5 hover:bg-white/30 dark:hover:bg-slate-800/20 transition-colors duration-200 cursor-pointer text-left">
+              <div className="flex gap-4 p-5 hover:bg-white/30 dark:hover:bg-slate-800/20 transition-colors duration-200 cursor-pointer text-left group">
                 <img src={card1} alt="" className="w-20 h-20 rounded-xl object-cover shrink-0 shadow-sm border border-white/10" />
                 <div className="flex flex-col justify-center">
                   <span className="text-[9px] font-black tracking-widest text-brand-cyan dark:text-brand-mint uppercase">National</span>
                   <h4 className="mt-1 text-xs font-bold text-slate-800 dark:text-slate-200 leading-snug line-clamp-2">
                     Rural India Diagnostics Infrastructure Receives New Budget Allocation
                   </h4>
-                  <button className="flex items-center gap-1.5 mt-2 text-brand-cyan dark:text-brand-mint font-black text-[10px] hover:translate-x-1 duration-200 uppercase tracking-widest">
+                  <button className="flex items-center gap-1.5 mt-2 text-brand-cyan dark:text-brand-mint font-black text-[10px] group-hover:translate-x-1 duration-200 uppercase tracking-widest cursor-pointer">
                     READ MORE <FaArrowRight size={8} />
                   </button>
                 </div>
               </div>
 
               {/* Item 3 */}
-              <div className="flex gap-4 p-5 hover:bg-white/30 dark:hover:bg-slate-800/20 transition-colors duration-200 cursor-pointer text-left">
+              <div className="flex gap-4 p-5 hover:bg-white/30 dark:hover:bg-slate-800/20 transition-colors duration-200 cursor-pointer text-left group">
                 <img src={card1} alt="" className="w-20 h-20 rounded-xl object-cover shrink-0 shadow-sm border border-white/10" />
                 <div className="flex flex-col justify-center">
                   <span className="text-[9px] font-black tracking-widest text-brand-cyan dark:text-brand-mint uppercase">National</span>
                   <h4 className="mt-1 text-xs font-bold text-slate-800 dark:text-slate-200 leading-snug line-clamp-2">
                     New AI Guidelines Drafted for Public Health Centers in India
                   </h4>
-                  <button className="flex items-center gap-1.5 mt-2 text-brand-cyan dark:text-brand-mint font-black text-[10px] hover:translate-x-1 duration-200 uppercase tracking-widest">
+                  <button className="flex items-center gap-1.5 mt-2 text-brand-cyan dark:text-brand-mint font-black text-[10px] group-hover:translate-x-1 duration-200 uppercase tracking-widest cursor-pointer">
                     READ MORE <FaArrowRight size={8} />
                   </button>
                 </div>
@@ -260,15 +332,15 @@ const Hero = () => {
               <div className="mt-5 flex items-center justify-between">
                 <div>
                   <p className="text-3xl font-black text-slate-800 dark:text-white tracking-tight font-heading">{currentAQI.aqi}</p>
-                  <p className="text-[10px] font-bold text-slate-400 mt-0.5">PM2.5 Index</p>
+                  <p className="text-[10px] font-bold text-slate-405 mt-0.5">PM2.5 Index</p>
                 </div>
-                <span className={`px-3 py-1 rounded-full text-2xs font-extrabold border ${currentAQI.color}`}>
+                <span className={`px-3 py-1 rounded-full text-[10px] font-extrabold border ${currentAQI.color}`}>
                   {currentAQI.status}
                 </span>
               </div>
 
               <div className="mt-5 p-3.5 bg-white/30 dark:bg-slate-900/30 rounded-xl border border-slate-200/30 dark:border-slate-800/30">
-                <p className="text-xs text-slate-600 dark:text-slate-350 leading-relaxed font-semibold">
+                <p className="text-xs text-slate-650 dark:text-slate-350 leading-relaxed font-semibold">
                   {currentAQI.tip}
                 </p>
               </div>
@@ -289,19 +361,19 @@ const Hero = () => {
                   <>
                     <button
                       onClick={() => handleVote("lessThan1")}
-                      className="w-full text-left px-4 py-2.5 rounded-xl border border-slate-200/60 dark:border-slate-800/60 text-xs font-bold text-slate-700 dark:text-slate-300 bg-white/10 hover:border-brand-cyan hover:bg-brand-cyan/5 dark:hover:bg-brand-mint/5 dark:hover:border-brand-mint transition-all duration-200 cursor-pointer"
+                      className="w-full text-left px-4 py-2.5 rounded-xl border border-slate-200/60 dark:border-slate-800/60 text-xs font-bold text-slate-700 dark:text-slate-305 bg-white/10 hover:border-brand-cyan hover:bg-brand-cyan/5 dark:hover:bg-brand-mint/5 dark:hover:border-brand-mint transition-all duration-200 cursor-pointer"
                     >
                       Less than 1 Litre
                     </button>
                     <button
                       onClick={() => handleVote("oneToTwo")}
-                      className="w-full text-left px-4 py-2.5 rounded-xl border border-slate-200/60 dark:border-slate-800/60 text-xs font-bold text-slate-700 dark:text-slate-300 bg-white/10 hover:border-brand-cyan hover:bg-brand-cyan/5 dark:hover:bg-brand-mint/5 dark:hover:border-brand-mint transition-all duration-200 cursor-pointer"
+                      className="w-full text-left px-4 py-2.5 rounded-xl border border-slate-200/60 dark:border-slate-800/60 text-xs font-bold text-slate-700 dark:text-slate-305 bg-white/10 hover:border-brand-cyan hover:bg-brand-cyan/5 dark:hover:bg-brand-mint/5 dark:hover:border-brand-mint transition-all duration-200 cursor-pointer"
                     >
                       1 to 2 Litres
                     </button>
                     <button
                       onClick={() => handleVote("twoPlus")}
-                      className="w-full text-left px-4 py-2.5 rounded-xl border border-slate-200/60 dark:border-slate-800/60 text-xs font-bold text-slate-700 dark:text-slate-300 bg-white/10 hover:border-brand-cyan hover:bg-brand-cyan/5 dark:hover:bg-brand-mint/5 dark:hover:border-brand-mint transition-all duration-200 cursor-pointer"
+                      className="w-full text-left px-4 py-2.5 rounded-xl border border-slate-200/60 dark:border-slate-800/60 text-xs font-bold text-slate-700 dark:text-slate-305 bg-white/10 hover:border-brand-cyan hover:bg-brand-cyan/5 dark:hover:bg-brand-mint/5 dark:hover:border-brand-mint transition-all duration-200 cursor-pointer"
                     >
                       More than 2 Litres
                     </button>

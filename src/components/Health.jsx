@@ -16,8 +16,32 @@ const TABS = [
 const Health = () => {
   const [activeTab, setActiveTab] = useState("General Health");
 
+  const handleMouseMove = (e) => {
+    const card = e.currentTarget;
+    const box = card.getBoundingClientRect();
+    const x = e.clientX - box.left - box.width / 2;
+    const y = e.clientY - box.top - box.height / 2;
+    card.style.transform = `perspective(1000px) rotateX(${-y / 15}deg) rotateY(${x / 15}deg) translateY(-6px)`;
+    
+    const shine = card.querySelector(".card-shine");
+    if (shine) {
+      shine.style.left = `${e.clientX - box.left - 150}px`;
+      shine.style.top = `${e.clientY - box.top - 150}px`;
+      shine.style.opacity = "0.15";
+    }
+  };
+
+  const handleMouseLeave = (e) => {
+    const card = e.currentTarget;
+    card.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)";
+    const shine = card.querySelector(".card-shine");
+    if (shine) {
+      shine.style.opacity = "0";
+    }
+  };
+
   return (
-    <section className="px-[10%] py-16 bg-transparent">
+    <section className="px-[5%] md:px-[10%] py-16 bg-transparent">
       {/* Heading */}
       <div className="flex justify-between items-end border-b border-slate-200/40 dark:border-slate-800/30 pb-6 text-left">
         <div>
@@ -41,10 +65,10 @@ const Health = () => {
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
-            className={`px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-wider transition-all duration-300 cursor-pointer ${
+            className={`px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-wider shrink-0 transition-all duration-300 border cursor-pointer ${
               activeTab === tab
-                ? "bg-brand-cyan dark:bg-brand-mint text-white dark:text-slate-900 shadow-md shadow-brand-cyan/20 dark:shadow-brand-mint/10 border border-brand-cyan dark:border-brand-mint"
-                : "bg-white/20 dark:bg-slate-900/35 text-slate-500 dark:text-slate-400 border border-slate-200/50 dark:border-slate-800/80 hover:bg-white/40 dark:hover:bg-slate-800/50 hover:text-slate-850 hover:text-slate-800 dark:hover:text-slate-250"
+                ? "bg-brand-cyan dark:bg-brand-mint text-white dark:text-slate-900 shadow-md shadow-brand-cyan/20 dark:shadow-brand-mint/10 border-brand-cyan dark:border-brand-mint"
+                : "bg-white/20 dark:bg-slate-900/35 text-slate-500 dark:text-slate-400 border border-slate-200/50 dark:border-slate-800/85 hover:bg-white/40 dark:hover:bg-slate-800/50 hover:text-slate-800 dark:hover:text-slate-200"
             }`}
           >
             {tab}
@@ -57,19 +81,26 @@ const Health = () => {
         
         {/* Left Column */}
         <div className="flex flex-col gap-8 text-left">
-          {/* Main Card */}
-          <div className="group glass-card rounded-3xl overflow-hidden shadow-premium shadow-hover cursor-pointer p-5 border border-slate-200/40 dark:border-slate-800/30">
-            <div className="overflow-hidden rounded-2xl h-56">
-              <img
-                src={health1}
-                alt="Health Indicators"
-                className="w-full h-full object-cover group-hover:scale-105 duration-500"
-              />
+          {/* Main Card with 3D Tilt */}
+          <div className="gradient-border-wrapper">
+            <div
+              onMouseMove={handleMouseMove}
+              onMouseLeave={handleMouseLeave}
+              className="gradient-border-inner group glass-card p-5 border-none cursor-pointer shadow-premium relative transition-all duration-350"
+            >
+              <div className="card-shine absolute w-[250px] h-[250px] bg-white rounded-full blur-3xl pointer-events-none opacity-0 transition-opacity duration-300 z-15"></div>
+              <div className="overflow-hidden rounded-2xl h-56 relative z-10">
+                <img
+                  src={health1}
+                  alt="Health Indicators"
+                  className="w-full h-full object-cover group-hover:scale-103 duration-500"
+                />
+              </div>
+              <span className="text-[9px] font-black tracking-widest text-brand-cyan dark:text-brand-mint mt-4 block uppercase relative z-10">{activeTab}</span>
+              <h3 className="text-base font-black text-slate-800 dark:text-slate-200 leading-snug mt-2.5 group-hover:text-brand-cyan dark:group-hover:text-brand-mint transition-colors duration-200 font-heading relative z-10">
+                New study shows preventative screening cuts chronic care burdens
+              </h3>
             </div>
-            <span className="text-[9px] font-black tracking-widest text-brand-cyan dark:text-brand-mint mt-4 block uppercase">{activeTab}</span>
-            <h3 className="text-base font-extrabold text-slate-800 dark:text-slate-200 leading-snug mt-2.5 group-hover:text-brand-cyan dark:group-hover:text-brand-mint transition-colors duration-200 font-heading">
-              New study shows preventative screening cuts chronic care burdens
-            </h3>
           </div>
 
           {/* Small News 1 */}
@@ -80,10 +111,10 @@ const Health = () => {
               className="w-20 h-20 rounded-xl object-cover shrink-0 shadow-sm border border-white/10"
             />
             <div>
-              <h4 className="text-xs font-bold text-slate-800 dark:text-slate-255 leading-snug group-hover:text-brand-cyan dark:group-hover:text-brand-mint duration-200 line-clamp-2">
+              <h4 className="text-xs font-bold text-slate-800 dark:text-slate-250 leading-snug group-hover:text-brand-cyan dark:group-hover:text-brand-mint duration-200 line-clamp-2">
                 Cardiovascular insights: What modern screenings tend to miss
               </h4>
-              <span className="text-[9px] text-slate-400 dark:text-slate-550 font-black mt-2 block">2 DAYS AGO</span>
+              <span className="text-[9px] text-slate-400 dark:text-slate-500 font-black mt-2 block">2 DAYS AGO</span>
             </div>
           </div>
 
@@ -95,29 +126,36 @@ const Health = () => {
               className="w-20 h-20 rounded-xl object-cover shrink-0 shadow-sm border border-white/10"
             />
             <div>
-              <h4 className="text-xs font-bold text-slate-800 dark:text-slate-255 leading-snug group-hover:text-brand-cyan dark:group-hover:text-brand-mint duration-200 line-clamp-2">
+              <h4 className="text-xs font-bold text-slate-800 dark:text-slate-250 leading-snug group-hover:text-brand-cyan dark:group-hover:text-brand-mint duration-200 line-clamp-2">
                 Pediatric guidelines are updating vaccination tracker targets
               </h4>
-              <span className="text-[9px] text-slate-400 dark:text-slate-550 font-black mt-2 block">3 DAYS AGO</span>
+              <span className="text-[9px] text-slate-400 dark:text-slate-500 font-black mt-2 block">3 DAYS AGO</span>
             </div>
           </div>
         </div>
 
         {/* Center Column */}
         <div className="flex flex-col gap-8 text-left">
-          {/* Main Card */}
-          <div className="group glass-card rounded-3xl overflow-hidden shadow-premium shadow-hover cursor-pointer p-5 border border-slate-200/40 dark:border-slate-800/30">
-            <div className="overflow-hidden rounded-2xl h-56">
-              <img
-                src={health2}
-                alt="Health Policies"
-                className="w-full h-full object-cover group-hover:scale-105 duration-500"
-              />
+          {/* Main Card with 3D Tilt */}
+          <div className="gradient-border-wrapper">
+            <div
+              onMouseMove={handleMouseMove}
+              onMouseLeave={handleMouseLeave}
+              className="gradient-border-inner group glass-card p-5 border-none cursor-pointer shadow-premium relative transition-all duration-350"
+            >
+              <div className="card-shine absolute w-[250px] h-[250px] bg-white rounded-full blur-3xl pointer-events-none opacity-0 transition-opacity duration-300 z-15"></div>
+              <div className="overflow-hidden rounded-2xl h-56 relative z-10">
+                <img
+                  src={health2}
+                  alt="Health Policies"
+                  className="w-full h-full object-cover group-hover:scale-103 duration-500"
+                />
+              </div>
+              <span className="text-[9px] font-black tracking-widest text-brand-cyan dark:text-brand-mint mt-4 block uppercase relative z-10">{activeTab}</span>
+              <h3 className="text-base font-black text-slate-800 dark:text-slate-200 leading-snug mt-2.5 group-hover:text-brand-cyan dark:group-hover:text-brand-mint transition-colors duration-200 font-heading relative z-10">
+                How regional policy reforms are altering primary clinic capacities
+              </h3>
             </div>
-            <span className="text-[9px] font-black tracking-widest text-brand-cyan dark:text-brand-mint mt-4 block uppercase">{activeTab}</span>
-            <h3 className="text-base font-extrabold text-slate-800 dark:text-slate-200 leading-snug mt-2.5 group-hover:text-brand-cyan dark:group-hover:text-brand-mint transition-colors duration-200 font-heading">
-              How regional policy reforms are altering primary clinic capacities
-            </h3>
           </div>
 
           {/* Small News 1 */}
@@ -128,10 +166,10 @@ const Health = () => {
               className="w-20 h-20 rounded-xl object-cover shrink-0 shadow-sm border border-white/10"
             />
             <div>
-              <h4 className="text-xs font-bold text-slate-800 dark:text-slate-255 leading-snug group-hover:text-brand-cyan dark:group-hover:text-brand-mint duration-200 line-clamp-2">
+              <h4 className="text-xs font-bold text-slate-805 dark:text-slate-250 leading-snug group-hover:text-brand-cyan dark:group-hover:text-brand-mint duration-200 line-clamp-2">
                 Allergy therapeutics are seeing efficacy spikes in research
               </h4>
-              <span className="text-[9px] text-slate-400 dark:text-slate-555 font-black mt-2 block">4 DAYS AGO</span>
+              <span className="text-[9px] text-slate-400 dark:text-slate-500 font-black mt-2 block">4 DAYS AGO</span>
             </div>
           </div>
 
@@ -143,29 +181,36 @@ const Health = () => {
               className="w-20 h-20 rounded-xl object-cover shrink-0 shadow-sm border border-white/10"
             />
             <div>
-              <h4 className="text-xs font-bold text-slate-800 dark:text-slate-255 leading-snug group-hover:text-brand-cyan dark:group-hover:text-brand-mint duration-200 line-clamp-2">
+              <h4 className="text-xs font-bold text-slate-805 dark:text-slate-250 leading-snug group-hover:text-brand-cyan dark:group-hover:text-brand-mint duration-200 line-clamp-2">
                 New diagnostic software accelerates clinic imaging analyses
               </h4>
-              <span className="text-[9px] text-slate-400 dark:text-slate-555 font-black mt-2 block">5 DAYS AGO</span>
+              <span className="text-[9px] text-slate-400 dark:text-slate-500 font-black mt-2 block">5 DAYS AGO</span>
             </div>
           </div>
         </div>
 
         {/* Right Column */}
         <div className="flex flex-col gap-8 text-left">
-          {/* Main Card */}
-          <div className="group glass-card rounded-3xl overflow-hidden shadow-premium shadow-hover cursor-pointer p-5 border border-slate-200/40 dark:border-slate-800/30">
-            <div className="overflow-hidden rounded-2xl h-56">
-              <img
-                src={health1}
-                alt="Health Tech"
-                className="w-full h-full object-cover group-hover:scale-105 duration-500"
-              />
+          {/* Main Card with 3D Tilt */}
+          <div className="gradient-border-wrapper">
+            <div
+              onMouseMove={handleMouseMove}
+              onMouseLeave={handleMouseLeave}
+              className="gradient-border-inner group glass-card p-5 border-none cursor-pointer shadow-premium relative transition-all duration-350"
+            >
+              <div className="card-shine absolute w-[250px] h-[250px] bg-white rounded-full blur-3xl pointer-events-none opacity-0 transition-opacity duration-300 z-15"></div>
+              <div className="overflow-hidden rounded-2xl h-56 relative z-10">
+                <img
+                  src={health1}
+                  alt="Health Tech"
+                  className="w-full h-full object-cover group-hover:scale-103 duration-500"
+                />
+              </div>
+              <span className="text-[9px] font-black tracking-widest text-brand-cyan dark:text-brand-mint mt-4 block uppercase relative z-10">{activeTab}</span>
+              <h3 className="text-base font-black text-slate-800 dark:text-slate-200 leading-snug mt-2.5 group-hover:text-brand-cyan dark:group-hover:text-brand-mint transition-colors duration-200 font-heading relative z-10">
+                Wearable sensors detect early anomalies before symptom onset
+              </h3>
             </div>
-            <span className="text-[9px] font-black tracking-widest text-brand-cyan dark:text-brand-mint mt-4 block uppercase">{activeTab}</span>
-            <h3 className="text-base font-extrabold text-slate-800 dark:text-slate-200 leading-snug mt-2.5 group-hover:text-brand-cyan dark:group-hover:text-brand-mint transition-colors duration-200 font-heading">
-              Wearable sensors detect early anomalies before symptom onset
-            </h3>
           </div>
 
           {/* Small News 1 */}
@@ -176,10 +221,10 @@ const Health = () => {
               className="w-20 h-20 rounded-xl object-cover shrink-0 shadow-sm border border-white/10"
             />
             <div>
-              <h4 className="text-xs font-bold text-slate-800 dark:text-slate-255 leading-snug group-hover:text-brand-cyan dark:group-hover:text-brand-mint duration-200 line-clamp-2">
+              <h4 className="text-xs font-bold text-slate-805 dark:text-slate-250 leading-snug group-hover:text-brand-cyan dark:group-hover:text-brand-mint duration-200 line-clamp-2">
                 Sleep trackers face reliability check against PSG benchmarks
               </h4>
-              <span className="text-[9px] text-slate-400 dark:text-slate-555 font-black mt-2 block">6 DAYS AGO</span>
+              <span className="text-[9px] text-slate-400 dark:text-slate-500 font-black mt-2 block">6 DAYS AGO</span>
             </div>
           </div>
 
@@ -191,10 +236,10 @@ const Health = () => {
               className="w-20 h-20 rounded-xl object-cover shrink-0 shadow-sm border border-white/10"
             />
             <div>
-              <h4 className="text-xs font-bold text-slate-800 dark:text-slate-255 leading-snug group-hover:text-brand-cyan dark:group-hover:text-brand-mint duration-200 line-clamp-2">
+              <h4 className="text-xs font-bold text-slate-805 dark:text-slate-250 leading-snug group-hover:text-brand-cyan dark:group-hover:text-brand-mint duration-200 line-clamp-2">
                 Telemedicine platforms show surge in rural geriatric usage
               </h4>
-              <span className="text-[9px] text-slate-400 dark:text-slate-555 font-black mt-2 block">1 WEEK AGO</span>
+              <span className="text-[9px] text-slate-400 dark:text-slate-500 font-black mt-2 block">1 WEEK AGO</span>
             </div>
           </div>
         </div>

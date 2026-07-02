@@ -20,7 +20,7 @@ const Webstories = () => {
   ];
 
   return (
-    <section className="mx-[10%] my-12 glass-panel p-8 md:p-10 rounded-3xl shadow-premium border border-slate-200/40 dark:border-slate-800/30 text-left">
+    <section className="mx-[5%] md:mx-[10%] my-12 glass-panel p-6 md:p-10 rounded-3xl shadow-premium border border-slate-200/40 dark:border-slate-800/30 text-left">
       {/* Heading */}
       <div>
         <h2 className="text-3xl font-black text-brand-dark dark:text-white inline-block relative font-heading uppercase tracking-widest">
@@ -37,9 +37,9 @@ const Webstories = () => {
         {stories.map((story) => (
           <div key={story.id} className="flex flex-col items-center cursor-pointer group shrink-0">
             {/* Gradient Border Ring */}
-            <div className={`w-24 h-24 rounded-full p-[3px] transition-all duration-300 ${
+            <div className={`w-24 h-24 rounded-full p-[3px] transition-all duration-350 ${
               story.active 
-                ? "bg-gradient-to-tr from-brand-cyan via-brand-mint to-brand-accent group-hover:rotate-45 group-hover:shadow-[0_0_15px_rgba(20,201,184,0.35)]"
+                ? "bg-gradient-to-tr from-brand-cyan via-brand-mint to-brand-accent group-hover:rotate-45 group-hover:shadow-[0_0_20px_rgba(20,201,184,0.4)]"
                 : "bg-slate-200 dark:bg-slate-800 group-hover:bg-slate-350 dark:group-hover:bg-slate-700"
             }`}>
               <div className="w-full h-full rounded-full bg-white dark:bg-[#070a13] p-0.5">
@@ -52,7 +52,7 @@ const Webstories = () => {
             </div>
             
             {/* Story Title */}
-            <span className="text-xs font-bold text-slate-700 dark:text-slate-300 mt-3 group-hover:text-brand-cyan dark:group-hover:text-brand-mint transition-colors duration-200 font-heading">
+            <span className="text-[11px] font-extrabold text-slate-650 dark:text-slate-350 mt-3 group-hover:text-brand-cyan dark:group-hover:text-brand-mint transition-colors duration-200 uppercase tracking-widest font-heading">
               {story.title}
             </span>
           </div>

@@ -9,7 +9,7 @@ const Footer = () => {
   return (
     <footer className="border-t border-white/5 bg-[#08111a] text-slate-350 mt-20 text-left">
       {/* Top Main Section */}
-      <div className="px-[10%] py-16">
+      <div className="px-[5%] md:px-[10%] py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10">
           
           {/* Column 1: Brand Info */}
@@ -21,16 +21,16 @@ const Footer = () => {
               India's premier health and scientific research portal. We bridge the gap between complex medical publications and daily wellness insights.
             </p>
             <div className="flex items-center gap-3 pt-2">
-              <a href="#" className="w-9 h-9 rounded-full bg-white/5 hover:bg-brand-mint hover:text-slate-900 flex items-center justify-center border border-white/10 transition-all duration-300 text-xs">
+              <a href="#" className="w-9 h-9 rounded-full bg-white/5 hover:bg-brand-mint hover:text-slate-900 flex items-center justify-center border border-white/10 transition-all duration-300 text-xs cursor-pointer">
                 <FaFacebookF />
               </a>
-              <a href="#" className="w-9 h-9 rounded-full bg-white/5 hover:bg-brand-mint hover:text-slate-900 flex items-center justify-center border border-white/10 transition-all duration-300 text-xs">
+              <a href="#" className="w-9 h-9 rounded-full bg-white/5 hover:bg-brand-mint hover:text-slate-900 flex items-center justify-center border border-white/10 transition-all duration-300 text-xs cursor-pointer">
                 <FaTwitter />
               </a>
-              <a href="#" className="w-9 h-9 rounded-full bg-white/5 hover:bg-brand-mint hover:text-slate-900 flex items-center justify-center border border-white/10 transition-all duration-300 text-xs">
+              <a href="#" className="w-9 h-9 rounded-full bg-white/5 hover:bg-brand-mint hover:text-slate-900 flex items-center justify-center border border-white/10 transition-all duration-300 text-xs cursor-pointer">
                 <FaYoutube />
               </a>
-              <a href="#" className="w-9 h-9 rounded-full bg-white/5 hover:bg-brand-mint hover:text-slate-900 flex items-center justify-center border border-white/10 transition-all duration-300 text-xs">
+              <a href="#" className="w-9 h-9 rounded-full bg-white/5 hover:bg-brand-mint hover:text-slate-900 flex items-center justify-center border border-white/10 transition-all duration-300 text-xs cursor-pointer">
                 <FaInstagram />
               </a>
             </div>
@@ -41,7 +41,7 @@ const Footer = () => {
             <h3 className="text-[10px] font-black uppercase tracking-widest text-white">
               About
             </h3>
-            <ul className="space-y-3 text-xs text-slate-400 font-semibold uppercase tracking-wider text-[9px]">
+            <ul className="space-y-3 text-[9px] text-slate-400 font-black uppercase tracking-wider">
               <li><a href="#" className="hover:text-brand-mint transition-colors">Editorial Standards</a></li>
               <li><a href="#" className="hover:text-brand-mint transition-colors">Fact-Checking Policy</a></li>
               <li><a href="#" className="hover:text-brand-mint transition-colors">Medical Advisory Board</a></li>
@@ -55,7 +55,7 @@ const Footer = () => {
             <h3 className="text-[10px] font-black uppercase tracking-widest text-white">
               Policies
             </h3>
-            <ul className="space-y-3 text-xs text-slate-400 font-semibold uppercase tracking-wider text-[9px]">
+            <ul className="space-y-3 text-[9px] text-slate-400 font-black uppercase tracking-wider">
               <li><a href="#" className="hover:text-brand-mint transition-colors">Privacy Policy</a></li>
               <li><a href="#" className="hover:text-brand-mint transition-colors">Terms of Service</a></li>
               <li><a href="#" className="hover:text-brand-mint transition-colors">Correction Policy</a></li>
@@ -69,7 +69,7 @@ const Footer = () => {
             <h3 className="text-[10px] font-black uppercase tracking-widest text-white">
               Quick Links
             </h3>
-            <ul className="space-y-3 text-xs text-slate-400 font-semibold uppercase tracking-wider text-[9px]">
+            <ul className="space-y-3 text-[9px] text-slate-400 font-black uppercase tracking-wider">
               <li><a href="#" className="hover:text-brand-mint transition-colors">Live Health Hub</a></li>
               <li><a href="#" className="hover:text-brand-mint transition-colors">Research Highlights</a></li>
               <li><a href="#" className="hover:text-brand-mint transition-colors">Podcast Episodes</a></li>

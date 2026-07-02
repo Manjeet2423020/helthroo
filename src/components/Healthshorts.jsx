@@ -36,8 +36,32 @@ const HealthShorts = () => {
     },
   ];
 
+  const handleMouseMove = (e) => {
+    const card = e.currentTarget;
+    const box = card.getBoundingClientRect();
+    const x = e.clientX - box.left - box.width / 2;
+    const y = e.clientY - box.top - box.height / 2;
+    card.style.transform = `perspective(1000px) rotateX(${-y / 15}deg) rotateY(${x / 15}deg) translateY(-6px)`;
+    
+    const shine = card.querySelector(".card-shine");
+    if (shine) {
+      shine.style.left = `${e.clientX - box.left - 100}px`;
+      shine.style.top = `${e.clientY - box.top - 100}px`;
+      shine.style.opacity = "0.15";
+    }
+  };
+
+  const handleMouseLeave = (e) => {
+    const card = e.currentTarget;
+    card.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)";
+    const shine = card.querySelector(".card-shine");
+    if (shine) {
+      shine.style.opacity = "0";
+    }
+  };
+
   return (
-    <section className="px-[10%] py-16 bg-transparent">
+    <section className="px-[5%] md:px-[10%] py-16 bg-transparent">
       {/* Heading */}
       <div className="flex items-center justify-between">
         <div className="text-left">
@@ -64,40 +88,47 @@ const HealthShorts = () => {
       {/* Cards Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-10">
         {shortsData.map((item) => (
-          <div key={item.id} className="group glass-card rounded-3xl overflow-hidden shadow-premium shadow-hover cursor-pointer flex flex-col justify-between h-full border border-slate-200/40 dark:border-slate-800/30">
-            <div>
-              {/* Image with Category Badge */}
-              <div className="relative h-48 overflow-hidden rounded-t-3xl">
-                <img src={item.image} alt={item.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                <span className="absolute top-4 left-4 bg-brand-dark/85 text-brand-accent px-2.5 py-0.5 text-[9px] font-black tracking-widest rounded-md backdrop-blur-sm">
-                  {item.tag}
-                </span>
+          <div key={item.id} className="gradient-border-wrapper">
+            <div
+              onMouseMove={handleMouseMove}
+              onMouseLeave={handleMouseLeave}
+              className="gradient-border-inner group glass-card overflow-hidden shadow-premium transition-all duration-350 cursor-pointer flex flex-col justify-between h-full border-none relative"
+            >
+              <div className="card-shine absolute w-[200px] h-[200px] bg-white rounded-full blur-3xl pointer-events-none opacity-0 transition-opacity duration-300 z-15"></div>
+              <div>
+                {/* Image with Category Badge */}
+                <div className="relative h-48 overflow-hidden rounded-t-3xl">
+                  <img src={item.image} alt={item.title} className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-500" />
+                  <span className="absolute top-4 left-4 bg-brand-dark/85 text-brand-accent px-2.5 py-0.5 text-[9px] font-black tracking-widest rounded-md backdrop-blur-sm z-20">
+                    {item.tag}
+                  </span>
+                </div>
+
+                {/* Content */}
+                <div className="p-5 text-left z-20 relative">
+                  <h3 className="font-black text-sm text-slate-800 dark:text-slate-200 leading-snug font-heading group-hover:text-brand-cyan dark:group-hover:text-brand-mint transition-colors duration-200 line-clamp-2">
+                    {item.title}
+                  </h3>
+                  <p className="text-slate-500 dark:text-slate-400 mt-3 text-xs leading-relaxed line-clamp-3 font-semibold">
+                    {item.desc}
+                  </p>
+                </div>
               </div>
 
-              {/* Content */}
-              <div className="p-5 text-left">
-                <h3 className="font-extrabold text-sm text-slate-800 dark:text-slate-200 leading-snug font-heading group-hover:text-brand-cyan dark:group-hover:text-brand-mint transition-colors duration-200 line-clamp-2">
-                  {item.title}
-                </h3>
-                <p className="text-slate-500 dark:text-slate-400 mt-3 text-xs leading-relaxed line-clamp-3 font-semibold">
-                  {item.desc}
-                </p>
-              </div>
-            </div>
-
-            {/* Bottom Actions */}
-            <div className="px-5 pb-5 pt-3 border-t border-slate-200/40 dark:border-slate-800/40 flex items-center justify-between bg-transparent">
-              <button className="flex items-center gap-1 text-slate-400 dark:text-slate-500 hover:text-brand-cyan dark:hover:text-brand-mint transition-colors duration-250 cursor-pointer">
-                <FiChevronDown size={16} />
-                <span className="text-[10px] font-black tracking-widest">READ MORE</span>
-              </button>
-              <div className="flex gap-2">
-                <button className="w-8 h-8 rounded-full bg-slate-50/50 dark:bg-slate-900/60 border border-slate-200/30 dark:border-slate-800/30 text-slate-500 dark:text-slate-400 hover:bg-brand-mint/15 hover:text-brand-cyan dark:hover:text-brand-mint flex items-center justify-center transition-all duration-200 cursor-pointer">
-                  <FiBookmark size={13} />
+              {/* Bottom Actions */}
+              <div className="px-5 pb-5 pt-3 border-t border-slate-200/40 dark:border-slate-800/40 flex items-center justify-between bg-transparent z-20 relative">
+                <button className="flex items-center gap-1 text-slate-400 dark:text-slate-500 hover:text-brand-cyan dark:hover:text-brand-mint transition-colors duration-250 cursor-pointer">
+                  <FiChevronDown size={16} />
+                  <span className="text-[10px] font-black tracking-widest">READ MORE</span>
                 </button>
-                <button className="w-8 h-8 rounded-full bg-slate-50/50 dark:bg-slate-900/60 border border-slate-200/30 dark:border-slate-800/30 text-slate-500 dark:text-slate-400 hover:bg-brand-mint/15 hover:text-brand-cyan dark:hover:text-brand-mint flex items-center justify-center transition-all duration-200 cursor-pointer">
-                  <FiShare2 size={13} />
-                </button>
+                <div className="flex gap-2">
+                  <button className="w-8 h-8 rounded-full bg-slate-50/50 dark:bg-slate-900/60 border border-slate-200/30 dark:border-slate-800/30 text-slate-500 dark:text-slate-400 hover:bg-brand-mint/15 hover:text-brand-cyan dark:hover:text-brand-mint flex items-center justify-center transition-all duration-200 cursor-pointer">
+                    <FiBookmark size={13} />
+                  </button>
+                  <button className="w-8 h-8 rounded-full bg-slate-50/50 dark:bg-slate-900/60 border border-slate-200/30 dark:border-slate-800/30 text-slate-500 dark:text-slate-400 hover:bg-brand-mint/15 hover:text-brand-cyan dark:hover:text-brand-mint flex items-center justify-center transition-all duration-200 cursor-pointer">
+                    <FiShare2 size={13} />
+                  </button>
+                </div>
               </div>
             </div>
           </div>

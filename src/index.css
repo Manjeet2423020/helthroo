@@ -269,3 +269,61 @@ body {
   box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4), 
               0 0 0 1px rgba(20, 201, 184, 0.3) !important;
 }
+
+/* Lenis smooth scrolling compatibility */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis-stopped {
+  overflow: hidden;
+}
+
+.lenis-scrolling iframe {
+  pointer-events: none;
+}
+
+/* Premium Text & Image Mask Animations */
+.text-mask {
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: bottom;
+}
+
+.text-mask-span {
+  display: inline-block;
+  transform: translateY(105%);
+  transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.text-mask.active .text-mask-span {
+  transform: translateY(0);
+}
+
+/* Glass card gradient borders - Stripe / Linear style */
+.gradient-border-wrapper {
+  position: relative;
+  background: linear-gradient(135deg, rgba(20, 201, 184, 0.15), rgba(255, 255, 255, 0.05));
+  padding: 1px;
+  border-radius: 1.5rem;
+  overflow: hidden;
+}
+
+.dark .gradient-border-wrapper {
+  background: linear-gradient(135deg, rgba(20, 201, 184, 0.25), rgba(255, 255, 255, 0.02));
+}
+
+.gradient-border-inner {
+  border-radius: calc(1.5rem - 1px);
+  height: 100%;
+  width: 100%;
+}
+

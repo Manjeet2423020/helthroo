@@ -33,8 +33,32 @@ const StateNews = () => {
     { id: 5, title: "Free eye camp screens 400 in two days", source: "Janta Reporter" },
   ];
 
+  const handleMouseMove = (e) => {
+    const card = e.currentTarget;
+    const box = card.getBoundingClientRect();
+    const x = e.clientX - box.left - box.width / 2;
+    const y = e.clientY - box.top - box.height / 2;
+    card.style.transform = `perspective(1000px) rotateX(${-y / 15}deg) rotateY(${x / 15}deg) translateY(-6px)`;
+    
+    const shine = card.querySelector(".card-shine");
+    if (shine) {
+      shine.style.left = `${e.clientX - box.left - 150}px`;
+      shine.style.top = `${e.clientY - box.top - 150}px`;
+      shine.style.opacity = "0.15";
+    }
+  };
+
+  const handleMouseLeave = (e) => {
+    const card = e.currentTarget;
+    card.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)";
+    const shine = card.querySelector(".card-shine");
+    if (shine) {
+      shine.style.opacity = "0";
+    }
+  };
+
   return (
-    <section className="px-[10%] py-16 bg-transparent">
+    <section className="px-[5%] md:px-[10%] py-16 bg-transparent">
       {/* Heading */}
       <div className="text-left">
         <h2 className="text-3xl font-black text-brand-dark dark:text-white relative inline-block font-heading uppercase tracking-widest">
@@ -78,34 +102,41 @@ const StateNews = () => {
       {/* Main Grid Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-8">
         
-        {/* Left Featured Card */}
-        <div className="lg:col-span-4 border border-slate-200/40 dark:border-slate-800/30 glass-card rounded-3xl overflow-hidden shadow-premium group cursor-pointer shadow-hover text-left flex flex-col justify-between">
-          <div>
-            <div className="relative overflow-hidden h-[260px] rounded-t-3xl">
-              <img
-                src={state1}
-                alt="ILBS Director Sarin"
-                className="w-full h-full object-cover group-hover:scale-105 duration-500"
-              />
-              <span className="absolute top-4 left-4 bg-brand-cyan dark:bg-brand-mint text-white dark:text-slate-900 px-3 py-1 text-[9px] font-black uppercase tracking-widest rounded-md">
-                {activeTab}
-              </span>
+        {/* Left Featured Card with 3D Tilt */}
+        <div className="lg:col-span-4 gradient-border-wrapper">
+          <div
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+            className="gradient-border-inner group glass-card overflow-hidden shadow-premium cursor-pointer flex flex-col justify-between h-full border-none relative"
+          >
+            <div className="card-shine absolute w-[250px] h-[250px] bg-white rounded-full blur-3xl pointer-events-none opacity-0 transition-opacity duration-300 z-15"></div>
+            <div>
+              <div className="relative overflow-hidden h-[260px] rounded-t-3xl">
+                <img
+                  src={state1}
+                  alt="ILBS Director Sarin"
+                  className="w-full h-full object-cover group-hover:scale-103 duration-500"
+                />
+                <span className="absolute top-4 left-4 bg-brand-cyan dark:bg-brand-mint text-white dark:text-slate-900 px-3 py-1.5 text-[9px] font-black uppercase tracking-widest rounded-md z-20 shadow-sm">
+                  {activeTab}
+                </span>
+              </div>
+              
+              <div className="p-6 text-left relative z-20">
+                <h3 className="text-base font-black text-slate-850 dark:text-slate-200 leading-snug font-heading group-hover:text-brand-cyan dark:group-hover:text-brand-mint transition-colors duration-200">
+                  ILBS Director Dr. Sarin's Advice: Enjoy Medicine and Always Keep a Learning Mindset
+                </h3>
+                <p className="text-slate-500 dark:text-slate-400 text-xs leading-relaxed mt-3 line-clamp-4 font-semibold">
+                  New Delhi: Ahead of National Doctors' Day 2026, Dr. Shiv Kumar Sarin, Founder Director of the Institute of Liver and Biliary Sciences (ILBS), shared an important message for young doctors and medical students.
+                </p>
+              </div>
             </div>
-            
-            <div className="p-6">
-              <h3 className="text-base font-extrabold text-slate-850 dark:text-slate-200 leading-snug font-heading group-hover:text-brand-cyan dark:group-hover:text-brand-mint transition-colors duration-200">
-                ILBS Director Dr. Sarin's Advice: Enjoy Medicine and Always Keep a Learning Mindset
-              </h3>
-              <p className="text-slate-500 dark:text-slate-400 text-xs leading-relaxed mt-3 line-clamp-4 font-semibold">
-                New Delhi: Ahead of National Doctors' Day 2026, Dr. Shiv Kumar Sarin, Founder Director of the Institute of Liver and Biliary Sciences (ILBS), shared an important message for young doctors and medical students.
-              </p>
-            </div>
-          </div>
 
-          <div className="p-6 pt-0">
-            <button className="w-full py-3 bg-brand-cyan/10 hover:bg-brand-cyan dark:bg-brand-mint/10 dark:hover:bg-brand-mint hover:text-white dark:hover:text-slate-900 text-brand-cyan dark:text-brand-mint text-[10px] font-black uppercase tracking-widest rounded-xl transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer border border-brand-cyan/25 dark:border-brand-mint/20 hover:shadow-lg">
-              Read Full Article <span>→</span>
-            </button>
+            <div className="p-6 pt-0 relative z-20">
+              <button className="w-full py-3 bg-brand-cyan/10 hover:bg-brand-cyan dark:bg-brand-mint/10 dark:hover:bg-brand-mint hover:text-white dark:hover:text-slate-900 text-brand-cyan dark:text-brand-mint text-[10px] font-black uppercase tracking-widest rounded-xl transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer border border-brand-cyan/25 dark:border-brand-mint/20 hover:shadow-lg">
+                Read Full Article <span>→</span>
+              </button>
+            </div>
           </div>
         </div>
 

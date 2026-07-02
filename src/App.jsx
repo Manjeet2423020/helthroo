@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Lenis from "lenis";
 import BreakingNews from "./components/BreakingNews";
 import Footer from "./components/Footer";
 import Health from "./components/Health";
@@ -37,10 +38,27 @@ function App() {
   const containerRef = useRef(null);
 
   useEffect(() => {
+    // Initialize Lenis smooth scroll
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+    });
+
+    // Update ScrollTrigger on Lenis scroll
+    lenis.on("scroll", ScrollTrigger.update);
+
+    // Synchronize GSAP ticker frame updates with Lenis
+    const updateTicker = (time) => {
+      lenis.raf(time * 1000);
+    };
+    gsap.ticker.add(updateTicker);
+    gsap.ticker.lagSmoothing(0);
+
     // Select all sections to animate
     const reveals = containerRef.current.querySelectorAll(".gsap-reveal");
     
-    reveals.forEach((el, index) => {
+    reveals.forEach((el) => {
       gsap.fromTo(
         el,
         {
@@ -61,8 +79,10 @@ function App() {
       );
     });
 
-    // Cleanup scroll triggers on unmount
+    // Cleanup scroll triggers and Lenis on unmount
     return () => {
+      lenis.destroy();
+      gsap.ticker.remove(updateTicker);
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
   }, []);
@@ -104,55 +124,43 @@ function App() {
 
       <div className="relative z-10">
         <Navbar />
+        <BreakingNews />
         
-        <div className="gsap-reveal">
-          <BreakingNews />
-        </div>
-
+        {/* Sections wrapped in GSAP Scroll reveal classes */}
         <div className="gsap-reveal">
           <Hero />
         </div>
-
         <div className="gsap-reveal">
           <Webstories />
         </div>
-
         <div className="gsap-reveal">
           <HealthShorts />
         </div>
-
         <div className="gsap-reveal">
           <StateNews />
         </div>
-
         <div className="gsap-reveal">
           <Wellness />
         </div>
-
         <div className="gsap-reveal">
           <Health />
         </div>
-
         <div className="gsap-reveal">
           <Other />
         </div>
-
         <div className="gsap-reveal">
           <ShortVideo />
         </div>
-
         <div className="gsap-reveal">
           <Podcast />
         </div>
-
         <div className="gsap-reveal">
           <Medical />
         </div>
-
         <div className="gsap-reveal">
           <Newsletter />
         </div>
-
+        
         <Footer />
       </div>
     </div>

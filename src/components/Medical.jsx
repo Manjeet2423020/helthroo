@@ -42,8 +42,32 @@ const HIGHLIGHTS = [
 ];
 
 const Medical = () => {
+  const handleMouseMove = (e) => {
+    const card = e.currentTarget;
+    const box = card.getBoundingClientRect();
+    const x = e.clientX - box.left - box.width / 2;
+    const y = e.clientY - box.top - box.height / 2;
+    card.style.transform = `perspective(1000px) rotateX(${-y / 15}deg) rotateY(${x / 15}deg) translateY(-6px)`;
+    
+    const shine = card.querySelector(".card-shine");
+    if (shine) {
+      shine.style.left = `${e.clientX - box.left - 150}px`;
+      shine.style.top = `${e.clientY - box.top - 150}px`;
+      shine.style.opacity = "0.15";
+    }
+  };
+
+  const handleMouseLeave = (e) => {
+    const card = e.currentTarget;
+    card.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)";
+    const shine = card.querySelector(".card-shine");
+    if (shine) {
+      shine.style.opacity = "0";
+    }
+  };
+
   return (
-    <section className="px-[10%] py-16 bg-transparent">
+    <section className="px-[5%] md:px-[10%] py-16 bg-transparent">
       {/* Heading */}
       <div className="flex items-end justify-between border-b border-slate-200/40 dark:border-slate-800/30 pb-6">
         <div className="text-left">
@@ -64,25 +88,30 @@ const Medical = () => {
       {/* Main Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-10">
         
-        {/* Left Card */}
-        <div className="lg:col-span-4 flex flex-col text-left">
-          <div className="glass-card overflow-hidden group cursor-pointer rounded-3xl shadow-premium shadow-hover transition-all flex flex-col h-full justify-between border border-slate-200/40 dark:border-slate-800/30">
+        {/* Left Card with 3D Tilt */}
+        <div className="lg:col-span-4 gradient-border-wrapper">
+          <div
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}
+            className="gradient-border-inner group glass-card overflow-hidden cursor-pointer shadow-premium transition-all flex flex-col h-full justify-between border-none relative"
+          >
+            <div className="card-shine absolute w-[250px] h-[250px] bg-white rounded-full blur-3xl pointer-events-none opacity-0 transition-opacity duration-300 z-15"></div>
             <div>
               {/* Image */}
-              <div className="overflow-hidden h-72 rounded-t-3xl">
+              <div className="overflow-hidden h-72 rounded-t-3xl relative z-10">
                 <img
                   src={medical1}
                   alt="Guava Juice"
-                  className="w-full h-full object-cover group-hover:scale-105 duration-500"
+                  className="w-full h-full object-cover group-hover:scale-103 duration-500"
                 />
               </div>
 
               {/* Content */}
-              <div className="p-6">
+              <div className="p-6 relative z-10 text-left">
                 <span className="text-[9px] font-black tracking-widest text-slate-400 block uppercase">
                   MAY 26, 2026 • BMJ JOURNALS
                 </span>
-                <h3 className="mt-3 text-lg font-extrabold leading-snug text-[#14384A] dark:text-slate-200 group-hover:text-brand-cyan dark:group-hover:text-brand-mint transition-colors duration-200 font-heading">
+                <h3 className="mt-3 text-lg font-black leading-snug text-[#14384A] dark:text-slate-200 group-hover:text-brand-cyan dark:group-hover:text-brand-mint transition-colors duration-200 font-heading">
                   Guava Juice May Help Boost Hemoglobin Levels
                 </h3>
                 <p className="text-slate-500 dark:text-slate-400 text-xs mt-3 leading-relaxed font-semibold">
@@ -91,7 +120,7 @@ const Medical = () => {
               </div>
             </div>
 
-            <div className="p-6 pt-0">
+            <div className="p-6 pt-0 relative z-10 text-left">
               <button className="flex items-center gap-2 uppercase tracking-widest text-brand-cyan dark:text-brand-mint hover:text-brand-mint font-black text-[10px] transition-colors duration-200 cursor-pointer">
                 View Abstract <FaArrowRight />
               </button>
@@ -104,7 +133,7 @@ const Medical = () => {
           {HIGHLIGHTS.map((item) => (
             <div
               key={item.id}
-              className="glass-card p-6 rounded-3xl flex flex-col justify-between shadow-premium shadow-hover group cursor-pointer border border-slate-200/40 dark:border-slate-800/30 bg-white/20 dark:bg-slate-900/30"
+              className="glass-card p-6 rounded-3xl flex flex-col justify-between shadow-premium group cursor-pointer border border-slate-200/40 dark:border-slate-800/30 bg-white/20 dark:bg-slate-900/30"
             >
               <div>
                 {/* Journal & Icon */}
@@ -118,7 +147,7 @@ const Medical = () => {
                 </div>
 
                 {/* Title */}
-                <h4 className="text-sm font-extrabold text-slate-800 dark:text-slate-200 leading-snug mt-3.5 group-hover:text-brand-cyan dark:group-hover:text-brand-mint duration-200 font-heading">
+                <h4 className="text-sm font-black text-slate-850 dark:text-slate-200 leading-snug mt-3.5 group-hover:text-brand-cyan dark:group-hover:text-brand-mint duration-200 font-heading">
                   {item.title}
                 </h4>
 
