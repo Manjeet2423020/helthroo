@@ -1,10 +1,16 @@
+import { useState, useRef } from "react";
 import short1 from "../assets/short1.jpg";
 import short2 from "../assets/short2.jpg";
 import short3 from "../assets/short3.jpg";
 import short4 from "../assets/short4.jpg";
-import { FiBookmark, FiShare2, FiChevronDown, FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { FiBookmark, FiShare2, FiChevronDown, FiChevronLeft, FiChevronRight, FiCheck } from "react-icons/fi";
+import { FaBookmark } from "react-icons/fa";
 
 const HealthShorts = () => {
+  const [bookmarks, setBookmarks] = useState({});
+  const [shared, setShared] = useState({});
+  const sliderRef = useRef(null);
+
   const shortsData = [
     {
       id: 1,
@@ -36,12 +42,30 @@ const HealthShorts = () => {
     },
   ];
 
+  const toggleBookmark = (id) => {
+    setBookmarks((prev) => ({ ...prev, [id]: !prev[id] }));
+  };
+
+  const handleShare = (id) => {
+    setShared((prev) => ({ ...prev, [id]: true }));
+    setTimeout(() => {
+      setShared((prev) => ({ ...prev, [id]: false }));
+    }, 2000);
+  };
+
+  const scrollSlider = (direction) => {
+    if (sliderRef.current) {
+      const scrollAmt = direction === "left" ? -320 : 320;
+      sliderRef.current.scrollBy({ left: scrollAmt, behavior: "smooth" });
+    }
+  };
+
   const handleMouseMove = (e) => {
     const card = e.currentTarget;
     const box = card.getBoundingClientRect();
     const x = e.clientX - box.left - box.width / 2;
     const y = e.clientY - box.top - box.height / 2;
-    card.style.transform = `perspective(1000px) rotateX(${-y / 15}deg) rotateY(${x / 15}deg) translateY(-6px)`;
+    card.style.transform = `perspective(1000px) rotateX(${-y / 20}deg) rotateY(${x / 20}deg) translateY(-4px)`;
     
     const shine = card.querySelector(".card-shine");
     if (shine) {
@@ -61,75 +85,107 @@ const HealthShorts = () => {
   };
 
   return (
-    <section className="px-[5%] md:px-[10%] py-16 bg-transparent">
-      {/* Heading */}
-      <div className="flex items-center justify-between">
+    <section className="px-[5%] md:px-[10%] py-16 bg-transparent relative z-20 overflow-hidden">
+      
+      {/* Heading / Navigation Control */}
+      <div className="flex justify-between items-end border-b border-slate-200/40 dark:border-slate-800/30 pb-6">
         <div className="text-left">
-          <h2 className="text-3xl font-black text-brand-dark dark:text-white relative inline-block font-heading uppercase tracking-widest">
+          <h2 className="text-3xl font-black text-slate-850 dark:text-white relative inline-block font-heading uppercase tracking-widest">
             Health Shorts
-            <span className="absolute left-0 bottom-0.5 w-full h-2.5 bg-brand-accent/35 dark:bg-brand-mint/15 -z-10 rounded"></span>
+            <span className="absolute left-0 bottom-0.5 w-full h-2.5 bg-teal-500/20 -z-10 rounded"></span>
           </h2>
           <p className="text-slate-500 dark:text-slate-400 text-sm mt-3 font-semibold">
             Quick health shorts to keep you informed in seconds.
           </p>
         </div>
 
-        {/* Navigation Buttons */}
+        {/* Carousel buttons */}
         <div className="flex gap-3">
-          <button className="w-11 h-11 rounded-full border border-slate-200/60 dark:border-slate-800/80 bg-white/20 dark:bg-slate-900/30 flex items-center justify-center text-slate-400 hover:border-brand-mint hover:bg-brand-mint/10 hover:text-brand-cyan dark:hover:text-brand-mint transition-all duration-300 cursor-pointer">
+          <button
+            onClick={() => scrollSlider("left")}
+            className="magnetic-target w-11 h-11 rounded-full border border-slate-200/60 dark:border-slate-800/80 bg-white/20 dark:bg-slate-900/30 flex items-center justify-center text-slate-500 dark:text-slate-400 hover:border-teal-500 hover:bg-teal-500/10 hover:text-teal-600 dark:hover:text-teal-400 transition-all duration-300 cursor-pointer"
+          >
             <FiChevronLeft size={18} />
           </button>
-          <button className="w-11 h-11 rounded-full border border-brand-mint/80 bg-white/20 dark:bg-slate-900/30 flex items-center justify-center text-brand-cyan dark:text-brand-mint hover:bg-brand-cyan hover:text-white dark:hover:bg-brand-mint dark:hover:text-slate-900 transition-all duration-300 cursor-pointer">
+          <button
+            onClick={() => scrollSlider("right")}
+            className="magnetic-target w-11 h-11 rounded-full border border-slate-200/60 dark:border-slate-800/80 bg-white/20 dark:bg-slate-900/30 flex items-center justify-center text-slate-500 dark:text-slate-400 hover:border-teal-500 hover:bg-teal-500/10 hover:text-teal-600 dark:hover:text-teal-400 transition-all duration-300 cursor-pointer"
+          >
             <FiChevronRight size={18} />
           </button>
         </div>
       </div>
 
-      {/* Cards Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-10">
+      {/* Horizontal Carousel List */}
+      <div
+        ref={sliderRef}
+        className="flex gap-6 mt-10 overflow-x-auto scrollbar-hide py-4 px-1 snap-x snap-mandatory"
+      >
         {shortsData.map((item) => (
-          <div key={item.id} className="gradient-border-wrapper">
+          <div key={item.id} className="min-w-[280px] sm:min-w-[310px] md:min-w-[330px] snap-start gradient-border-wrapper rounded-3xl">
             <div
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
-              className="gradient-border-inner group glass-card overflow-hidden shadow-premium transition-all duration-350 cursor-pointer flex flex-col justify-between h-full border-none relative"
+              className="gradient-border-inner group glass-card overflow-hidden shadow-lg transition-all duration-350 cursor-pointer flex flex-col justify-between h-[420px] border-none relative"
             >
               <div className="card-shine absolute w-[200px] h-[200px] bg-white rounded-full blur-3xl pointer-events-none opacity-0 transition-opacity duration-300 z-15"></div>
+              
               <div>
-                {/* Image with Category Badge */}
-                <div className="relative h-48 overflow-hidden rounded-t-3xl">
-                  <img src={item.image} alt={item.title} className="w-full h-full object-cover group-hover:scale-103 transition-transform duration-500" />
-                  <span className="absolute top-4 left-4 bg-brand-dark/85 text-brand-accent px-2.5 py-0.5 text-[9px] font-black tracking-widest rounded-md backdrop-blur-sm z-20">
+                {/* Image backdrop */}
+                <div className="relative h-44 overflow-hidden rounded-t-3xl">
+                  <img
+                    src={item.image}
+                    alt={item.title}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <span className="absolute top-4 left-4 bg-slate-900/90 text-teal-400 border border-teal-500/30 px-2.5 py-0.5 text-[8px] font-black tracking-widest rounded-md backdrop-blur-sm z-20">
                     {item.tag}
                   </span>
                 </div>
 
-                {/* Content */}
+                {/* Text Content */}
                 <div className="p-5 text-left z-20 relative">
-                  <h3 className="font-black text-sm text-slate-800 dark:text-slate-200 leading-snug font-heading group-hover:text-brand-cyan dark:group-hover:text-brand-mint transition-colors duration-200 line-clamp-2">
+                  <h3 className="font-black text-sm text-slate-800 dark:text-slate-200 leading-snug font-heading group-hover:text-teal-600 dark:group-hover:text-teal-400 transition-colors duration-200 line-clamp-2">
                     {item.title}
                   </h3>
-                  <p className="text-slate-500 dark:text-slate-400 mt-3 text-xs leading-relaxed line-clamp-3 font-semibold">
+                  <p className="text-slate-500 dark:text-slate-400 mt-2.5 text-[11px] leading-relaxed line-clamp-3 font-semibold">
                     {item.desc}
                   </p>
                 </div>
               </div>
 
-              {/* Bottom Actions */}
-              <div className="px-5 pb-5 pt-3 border-t border-slate-200/40 dark:border-slate-800/40 flex items-center justify-between bg-transparent z-20 relative">
-                <button className="flex items-center gap-1 text-slate-400 dark:text-slate-500 hover:text-brand-cyan dark:hover:text-brand-mint transition-colors duration-250 cursor-pointer">
-                  <FiChevronDown size={16} />
-                  <span className="text-[10px] font-black tracking-widest">READ MORE</span>
+              {/* Card Footer Actions */}
+              <div className="px-5 pb-5 pt-3 border-t border-slate-200/25 dark:border-slate-800/25 flex items-center justify-between bg-transparent z-20 relative">
+                <button className="flex items-center gap-1 text-slate-400 dark:text-slate-500 hover:text-teal-600 dark:hover:text-teal-450 transition-colors duration-250 cursor-pointer">
+                  <FiChevronDown size={14} />
+                  <span className="text-[9px] font-black tracking-widest">READ SHORT</span>
                 </button>
+                
                 <div className="flex gap-2">
-                  <button className="w-8 h-8 rounded-full bg-slate-50/50 dark:bg-slate-900/60 border border-slate-200/30 dark:border-slate-800/30 text-slate-500 dark:text-slate-400 hover:bg-brand-mint/15 hover:text-brand-cyan dark:hover:text-brand-mint flex items-center justify-center transition-all duration-200 cursor-pointer">
-                    <FiBookmark size={13} />
+                  <button
+                    onClick={() => toggleBookmark(item.id)}
+                    className={`w-8 h-8 rounded-full border flex items-center justify-center transition-all duration-350 cursor-pointer ${
+                      bookmarks[item.id]
+                        ? "bg-teal-500 text-slate-950 border-teal-500 dark:bg-teal-400 dark:border-teal-450"
+                        : "bg-white/10 border-slate-200/40 text-slate-500 dark:border-slate-800/40 dark:text-slate-450 hover:bg-teal-500/10 hover:text-teal-500"
+                    }`}
+                  >
+                    {bookmarks[item.id] ? <FaBookmark size={11} /> : <FiBookmark size={11} />}
                   </button>
-                  <button className="w-8 h-8 rounded-full bg-slate-50/50 dark:bg-slate-900/60 border border-slate-200/30 dark:border-slate-800/30 text-slate-500 dark:text-slate-400 hover:bg-brand-mint/15 hover:text-brand-cyan dark:hover:text-brand-mint flex items-center justify-center transition-all duration-200 cursor-pointer">
-                    <FiShare2 size={13} />
+
+                  <button
+                    onClick={() => handleShare(item.id)}
+                    className={`w-8 h-8 rounded-full border flex items-center justify-center transition-all duration-350 cursor-pointer ${
+                      shared[item.id]
+                        ? "bg-emerald-500 text-white border-emerald-500"
+                        : "bg-white/10 border-slate-200/40 text-slate-500 dark:border-slate-800/40 dark:text-slate-450 hover:bg-teal-500/10 hover:text-teal-500"
+                    }`}
+                  >
+                    {shared[item.id] ? <FiCheck size={12} /> : <FiShare2 size={11} />}
                   </button>
                 </div>
               </div>
+
             </div>
           </div>
         ))}

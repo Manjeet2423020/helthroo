@@ -1,5 +1,5 @@
-import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
-import { FaPlay } from "react-icons/fa";
+import { useState } from "react";
+import { FiChevronLeft, FiChevronRight, FiPlay, FiHeadphones } from "react-icons/fi";
 import podcast1 from "../assets/podcast1.jpg";
 import podcast2 from "../assets/podcast2.jpg";
 
@@ -39,54 +39,45 @@ const PODCASTS = [
 ];
 
 const Podcast = () => {
+  const [hoveredId, setHoveredId] = useState(null);
+
   const handleMouseMove = (e) => {
     const card = e.currentTarget;
     const box = card.getBoundingClientRect();
     const x = e.clientX - box.left - box.width / 2;
     const y = e.clientY - box.top - box.height / 2;
-    card.style.transform = `perspective(1000px) rotateX(${-y / 15}deg) rotateY(${x / 15}deg) translateY(-6px)`;
-    
-    const shine = card.querySelector(".card-shine");
-    if (shine) {
-      shine.style.left = `${e.clientX - box.left - 150}px`;
-      shine.style.top = `${e.clientY - box.top - 150}px`;
-      shine.style.opacity = "0.15";
-    }
+    card.style.transform = `perspective(1000px) rotateX(${-y / 20}deg) rotateY(${x / 20}deg) translateY(-4px)`;
   };
 
   const handleMouseLeave = (e) => {
     const card = e.currentTarget;
     card.style.transform = "perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0)";
-    const shine = card.querySelector(".card-shine");
-    if (shine) {
-      shine.style.opacity = "0";
-    }
   };
 
   return (
-    <section className="mx-[5%] md:mx-[10%] my-16 bg-[#081524] text-white rounded-3xl p-6 md:p-12 border border-white/5 shadow-premium relative overflow-hidden">
+    <section className="mx-[5%] md:mx-[10%] my-16 bg-[#030712] text-white rounded-[32px] p-8 md:p-12 border border-slate-800/80 shadow-premium relative overflow-hidden z-20">
       
-      {/* Decorative aura spot */}
-      <div className="absolute top-[-30%] right-[-10%] w-96 h-96 bg-brand-cyan/20 rounded-full blur-[100px] pointer-events-none"></div>
+      {/* Background visual neon nodes */}
+      <div className="absolute top-[-30%] right-[-10%] w-96 h-96 bg-teal-500/10 rounded-full blur-[100px] pointer-events-none"></div>
 
-      {/* Heading */}
-      <div className="flex justify-between items-end border-b border-white/10 pb-6 relative z-10">
+      {/* Header */}
+      <div className="flex justify-between items-end border-b border-slate-850/80 pb-6 relative z-10">
         <div className="text-left">
           <h2 className="text-3xl font-black text-white relative inline-block font-heading uppercase tracking-widest">
             Health Podcasts
-            <span className="absolute left-0 bottom-0.5 w-full h-2.5 bg-brand-cyan/40 -z-10 rounded"></span>
+            <span className="absolute left-0 bottom-0.5 w-full h-2.5 bg-teal-500/25 -z-10 rounded"></span>
           </h2>
-          <p className="text-slate-350 text-sm mt-3 font-semibold">
+          <p className="text-slate-400 text-sm mt-3 font-semibold font-sans">
             Every health conversation, with expert insights.
           </p>
         </div>
 
         {/* Navigation Buttons */}
         <div className="flex gap-3">
-          <button className="w-11 h-11 rounded-full border border-white/15 text-slate-300 flex items-center justify-center hover:bg-brand-cyan hover:text-white hover:border-brand-cyan transition-all duration-300 cursor-pointer">
+          <button className="magnetic-target w-11 h-11 rounded-full border border-slate-800/80 bg-slate-900/50 text-slate-450 flex items-center justify-center hover:border-teal-500 hover:text-teal-400 transition-all duration-300 cursor-pointer">
             <FiChevronLeft size={18} />
           </button>
-          <button className="w-11 h-11 rounded-full border border-white/15 text-slate-300 flex items-center justify-center hover:bg-brand-cyan hover:text-white hover:border-brand-cyan transition-all duration-300 cursor-pointer">
+          <button className="magnetic-target w-11 h-11 rounded-full border border-slate-800/80 bg-slate-900/50 text-slate-450 flex items-center justify-center hover:border-teal-500 hover:text-teal-400 transition-all duration-300 cursor-pointer">
             <FiChevronRight size={18} />
           </button>
         </div>
@@ -95,48 +86,103 @@ const Podcast = () => {
       {/* Cards Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-10 relative z-10">
         {PODCASTS.map((podcast) => (
-          <div key={podcast.id} className="gradient-border-wrapper">
+          <div
+            key={podcast.id}
+            onMouseEnter={() => setHoveredId(podcast.id)}
+            onMouseLeave={() => {
+              setHoveredId(null);
+            }}
+            className="group relative h-[380px] bg-slate-950/80 rounded-2xl overflow-hidden border border-slate-800/60 transition-all duration-500 hover:border-teal-500/50"
+          >
+            {/* 3D Tilt Wrapper */}
             <div
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
-              className="gradient-border-inner bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl overflow-hidden shadow-premium group cursor-pointer hover:border-brand-mint/40 hover:bg-white/10 duration-300 flex flex-col text-left h-full relative"
+              className="w-full h-full flex flex-col justify-between p-5 relative z-10 transition-transform duration-300"
             >
-              <div className="card-shine absolute w-[200px] h-[200px] bg-white rounded-full blur-3xl pointer-events-none opacity-0 transition-opacity duration-300 z-15"></div>
-              {/* Image & Play Button overlay */}
-              <div className="relative overflow-hidden aspect-[4/3] z-10">
-                <img
-                  src={podcast.image}
-                  alt={podcast.title}
-                  className="w-full h-full object-cover group-hover:scale-103 duration-500"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 to-transparent"></div>
-                
-                {/* Play Button */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-brand-cyan flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:bg-brand-mint group-hover:shadow-[0_0_20px_rgba(20,201,184,0.6)] transition-all duration-300">
-                  <FaPlay className="text-white group-hover:text-slate-900 text-sm ml-1" />
+              {/* Top Row: Category and headphones icon */}
+              <div className="flex justify-between items-start">
+                <span className="bg-teal-500/10 text-teal-400 border border-teal-500/20 px-2.5 py-0.5 rounded text-[8px] font-black uppercase tracking-widest">
+                  {podcast.category}
+                </span>
+                <FiHeadphones className="text-slate-500 group-hover:text-teal-400 transition-colors" size={14} />
+              </div>
+
+              {/* Middle Section: Vinyl Disc & Cover Art */}
+              <div className="relative w-44 h-44 mx-auto my-4 flex items-center justify-center">
+                {/* Spinning Vinyl Disc behind Cover art */}
+                <div
+                  className={`absolute w-36 h-36 rounded-full bg-slate-900 border-4 border-slate-950 flex items-center justify-center transition-all duration-750 ease-out z-0 shadow-lg ${
+                    hoveredId === podcast.id
+                      ? "translate-x-12 rotate-180 opacity-100"
+                      : "translate-x-0 rotate-0 opacity-0"
+                  }`}
+                  style={{
+                    backgroundImage: "radial-gradient(circle, #1e293b 25%, #0f172a 45%, #020617 80%)",
+                  }}
+                >
+                  {/* Vinyl center sticker */}
+                  <div className="w-10 h-10 rounded-full bg-teal-500 border border-slate-950 flex items-center justify-center">
+                    <div className="w-2 h-2 rounded-full bg-slate-950"></div>
+                  </div>
+                </div>
+
+                {/* Cover Art Frame */}
+                <div className="relative w-36 h-36 rounded-xl overflow-hidden shadow-2xl z-10 border border-white/10 group-hover:scale-102 transition-transform duration-500">
+                  <img
+                    src={podcast.image}
+                    alt={podcast.title}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-slate-950/40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                    <div className="w-12 h-12 rounded-full bg-teal-500 text-slate-950 flex items-center justify-center shadow-lg">
+                      <FiPlay size={16} className="ml-0.5 fill-current" />
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              {/* Content */}
-              <div className="p-5 flex flex-col justify-between flex-1 z-10 relative">
-                <div>
-                  <span className="text-[9px] font-black text-brand-mint uppercase tracking-widest">
-                    {podcast.category}
-                  </span>
-                  <h3 className="text-sm font-black text-white mt-2 leading-snug font-heading group-hover:text-brand-mint transition-colors duration-200 line-clamp-2">
-                    {podcast.title}
-                  </h3>
-                </div>
+              {/* Bottom Section: Title, Date, Waveform */}
+              <div className="text-left mt-auto">
+                <h3 className="text-xs font-black text-white leading-snug font-heading group-hover:text-teal-400 transition-colors line-clamp-2">
+                  {podcast.title}
+                </h3>
                 
-                <div className="flex justify-between items-center mt-5 pt-3 border-t border-white/10 text-slate-450 text-[10px] font-bold uppercase tracking-wider">
+                <div className="flex justify-between items-center mt-4 text-[9px] font-black text-slate-500 uppercase tracking-widest">
                   <span>{podcast.date}</span>
-                  <span className="bg-white/10 px-2.5 py-0.5 rounded text-white text-[9px] font-black">{podcast.duration}</span>
+                  <span>{podcast.duration}</span>
+                </div>
+
+                {/* Animated Audio Waveform Overlay */}
+                <div className="h-4 flex items-end gap-[3px] mt-3.5 overflow-hidden opacity-30 group-hover:opacity-100 transition-all duration-300">
+                  {[...Array(12)].map((_, index) => {
+                    const randomDelay = Math.random() * 0.8;
+                    const randomHeight = 4 + Math.random() * 12;
+                    return (
+                      <div
+                        key={index}
+                        className="flex-1 bg-teal-400 rounded-full transition-all"
+                        style={{
+                          height: hoveredId === podcast.id ? `${randomHeight}px` : "2px",
+                          animation: hoveredId === podcast.id ? `soundWave 1.2s ease-in-out ${randomDelay}s infinite alternate` : "none",
+                        }}
+                      ></div>
+                    );
+                  })}
                 </div>
               </div>
+
             </div>
           </div>
         ))}
       </div>
+
+      <style>{`
+        @keyframes soundWave {
+          0% { height: 2px; }
+          100% { height: 16px; }
+        }
+      `}</style>
     </section>
   );
 };

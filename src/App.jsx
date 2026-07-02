@@ -20,18 +20,18 @@ import Wellness from "./components/Wellness";
 gsap.registerPlugin(ScrollTrigger);
 
 const PARTICLES = [
-  { id: 1, type: "plus", top: "5%", left: "6%", size: "w-5 h-5", delay: "0s", duration: "16s", anim: "animate-float-particle-1" },
-  { id: 2, type: "dot", top: "12%", left: "94%", size: "w-2.5 h-2.5", delay: "2s", duration: "20s", anim: "animate-float-particle-2" },
-  { id: 3, type: "plus", top: "20%", left: "12%", size: "w-4 h-4", delay: "4s", duration: "18s", anim: "animate-float-particle-1" },
-  { id: 4, type: "dot", top: "28%", left: "88%", size: "w-3 h-3", delay: "1s", duration: "24s", anim: "animate-float-particle-2" },
-  { id: 5, type: "plus", top: "37%", left: "5%", size: "w-5 h-5", delay: "3s", duration: "22s", anim: "animate-float-particle-1" },
-  { id: 6, type: "dot", top: "45%", left: "95%", size: "w-2.5 h-2.5", delay: "5s", duration: "19s", anim: "animate-float-particle-2" },
-  { id: 7, type: "plus", top: "53%", left: "10%", size: "w-4 h-4", delay: "2s", duration: "21s", anim: "animate-float-particle-1" },
-  { id: 8, type: "dot", top: "62%", left: "91%", size: "w-3.5 h-3.5", delay: "3s", duration: "25s", anim: "animate-float-particle-2" },
-  { id: 9, type: "plus", top: "70%", left: "7%", size: "w-5 h-5", delay: "1s", duration: "20s", anim: "animate-float-particle-1" },
-  { id: 10, type: "dot", top: "78%", left: "93%", size: "w-2.5 h-2.5", delay: "4s", duration: "18s", anim: "animate-float-particle-2" },
-  { id: 11, type: "plus", top: "86%", left: "14%", size: "w-4 h-4", delay: "2s", duration: "23s", anim: "animate-float-particle-1" },
-  { id: 12, type: "dot", top: "94%", left: "88%", size: "w-3.5 h-3.5", delay: "5s", duration: "21s", anim: "animate-float-particle-2" },
+  { id: 1, type: "plus", top: "4%", left: "8%", size: "w-5 h-5", delay: "0s", duration: "18s", anim: "animate-float-particle-1" },
+  { id: 2, type: "dot", top: "10%", left: "92%", size: "w-3 h-3", delay: "2s", duration: "22s", anim: "animate-float-particle-2" },
+  { id: 3, type: "plus", top: "18%", left: "14%", size: "w-4 h-4", delay: "4s", duration: "20s", anim: "animate-float-particle-1" },
+  { id: 4, type: "dot", top: "25%", left: "86%", size: "w-3.5 h-3.5", delay: "1s", duration: "26s", anim: "animate-float-particle-2" },
+  { id: 5, type: "plus", top: "35%", left: "6%", size: "w-5 h-5", delay: "3s", duration: "24s", anim: "animate-float-particle-1" },
+  { id: 6, type: "dot", top: "42%", left: "94%", size: "w-3 h-3", delay: "5s", duration: "21s", anim: "animate-float-particle-2" },
+  { id: 7, type: "plus", top: "50%", left: "12%", size: "w-4 h-4", delay: "2s", duration: "23s", anim: "animate-float-particle-1" },
+  { id: 8, type: "dot", top: "60%", left: "89%", size: "w-3.5 h-3.5", delay: "3s", duration: "28s", anim: "animate-float-particle-2" },
+  { id: 9, type: "plus", top: "68%", left: "8%", size: "w-5 h-5", delay: "1s", duration: "22s", anim: "animate-float-particle-1" },
+  { id: 10, type: "dot", top: "76%", left: "91%", size: "w-3 h-3", delay: "4s", duration: "20s", anim: "animate-float-particle-2" },
+  { id: 11, type: "plus", top: "84%", left: "15%", size: "w-4 h-4", delay: "2s", duration: "25s", anim: "animate-float-particle-1" },
+  { id: 12, type: "dot", top: "92%", left: "86%", size: "w-3.5 h-3.5", delay: "5s", duration: "23s", anim: "animate-float-particle-2" },
 ];
 
 function App() {
@@ -45,65 +45,114 @@ function App() {
       smoothWheel: true,
     });
 
-    // Update ScrollTrigger on Lenis scroll
     lenis.on("scroll", ScrollTrigger.update);
 
-    // Synchronize GSAP ticker frame updates with Lenis
     const updateTicker = (time) => {
       lenis.raf(time * 1000);
     };
     gsap.ticker.add(updateTicker);
     gsap.ticker.lagSmoothing(0);
 
-    // Select all sections to animate
+    // Global ScrollTrigger entrance reveals
     const reveals = containerRef.current.querySelectorAll(".gsap-reveal");
-    
     reveals.forEach((el) => {
       gsap.fromTo(
         el,
         {
           opacity: 0,
-          y: 40,
+          y: 60,
+          scale: 0.98,
         },
         {
           opacity: 1,
           y: 0,
-          duration: 1,
+          scale: 1,
+          duration: 1.2,
           ease: "power3.out",
           scrollTrigger: {
             trigger: el,
-            start: "top 85%", // Animation starts when the section top reaches 85% of viewport height
+            start: "top 90%",
             toggleActions: "play none none none",
           },
         }
       );
     });
 
-    // Cleanup scroll triggers and Lenis on unmount
+    // Global Magnetic targets hover effect
+    const setupMagnetic = () => {
+      const targets = document.querySelectorAll(".magnetic-target");
+      targets.forEach((target) => {
+        const onMouseMove = (e) => {
+          const rect = target.getBoundingClientRect();
+          const x = e.clientX - rect.left - rect.width / 2;
+          const y = e.clientY - rect.top - rect.height / 2;
+          gsap.to(target, {
+            x: x * 0.35,
+            y: y * 0.35,
+            duration: 0.3,
+            ease: "power2.out",
+          });
+        };
+
+        const onMouseLeave = () => {
+          gsap.to(target, {
+            x: 0,
+            y: 0,
+            duration: 0.6,
+            ease: "elastic.out(1, 0.3)",
+          });
+        };
+
+        target.addEventListener("mousemove", onMouseMove);
+        target.addEventListener("mouseleave", onMouseLeave);
+
+        // Save reference to clean up
+        target._cleanupMagnetic = () => {
+          target.removeEventListener("mousemove", onMouseMove);
+          target.removeEventListener("mouseleave", onMouseLeave);
+        };
+      });
+    };
+
+    // Delay slightly to ensure children elements are rendered
+    const timeoutId = setTimeout(setupMagnetic, 300);
+
     return () => {
+      clearTimeout(timeoutId);
       lenis.destroy();
       gsap.ticker.remove(updateTicker);
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+      
+      const targets = document.querySelectorAll(".magnetic-target");
+      targets.forEach((target) => {
+        if (target._cleanupMagnetic) {
+          target._cleanupMagnetic();
+        }
+      });
     };
   }, []);
 
   return (
     <div 
       ref={containerRef} 
-      className="relative min-h-screen overflow-x-hidden bg-[#f3f8f8] dark:bg-[#070a13] transition-colors duration-300"
+      className="relative min-h-screen overflow-x-hidden bg-slate-50 dark:bg-brand-dark transition-colors duration-500"
     >
-      {/* Ambient background glowing blobs - adjusted opacities for light mode visibility */}
+      {/* Background Grids & Ambient Glowing Blobs */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
-        <div className="absolute top-[5%] left-[-5%] w-[55vw] h-[55vw] rounded-full bg-brand-mint/18 dark:bg-brand-mint/5 blur-[140px] animate-blob-1"></div>
-        <div className="absolute top-[22%] right-[-10%] w-[60vw] h-[60vw] rounded-full bg-brand-accent/16 dark:bg-brand-accent/6 blur-[160px] animate-blob-2"></div>
-        <div className="absolute top-[45%] left-[-8%] w-[50vw] h-[50vw] rounded-full bg-brand-mint/15 dark:bg-brand-mint/5 blur-[130px] animate-blob-1"></div>
-        <div className="absolute top-[68%] right-[-5%] w-[58vw] h-[58vw] rounded-full bg-brand-accent/16 dark:bg-brand-accent/6 blur-[150px] animate-blob-2"></div>
+        <div className="absolute inset-0 grid-bg-overlay opacity-100"></div>
+        <div className="absolute inset-0 aurora-bg-light dark:aurora-bg-dark opacity-100"></div>
 
-        {/* Floating Health themed particles (Plus symbols & Glowing circles) */}
+        {/* Floating gradient blur circles */}
+        <div className="absolute top-[3%] left-[-10%] w-[55vw] h-[55vw] rounded-full bg-teal-500/10 dark:bg-teal-500/4 blur-[130px] animate-blob-1"></div>
+        <div className="absolute top-[25%] right-[-15%] w-[60vw] h-[60vw] rounded-full bg-sky-500/8 dark:bg-sky-500/3 blur-[150px] animate-blob-2"></div>
+        <div className="absolute top-[50%] left-[-12%] w-[50vw] h-[50vw] rounded-full bg-emerald-500/8 dark:bg-emerald-500/3 blur-[120px] animate-blob-1"></div>
+        <div className="absolute top-[75%] right-[-10%] w-[55vw] h-[55vw] rounded-full bg-teal-500/10 dark:bg-teal-500/4 blur-[140px] animate-blob-2"></div>
+
+        {/* Floating Plus Symbols and circles */}
         {PARTICLES.map((p) => (
           <div
             key={p.id}
-            className={`absolute ${p.size} ${p.anim} pointer-events-none`}
+            className={`absolute ${p.size} ${p.anim} pointer-events-none opacity-20 dark:opacity-30`}
             style={{
               top: p.top,
               left: p.left,
@@ -112,21 +161,21 @@ function App() {
             }}
           >
             {p.type === "plus" ? (
-              <svg className="w-full h-full text-brand-cyan/20 dark:text-brand-mint/20 fill-current" viewBox="0 0 24 24">
+              <svg className="w-full h-full text-teal-500/35 dark:text-teal-400/25 fill-current" viewBox="0 0 24 24">
                 <path d="M19 10.5h-5.5V5c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v5.5H5c-.83 0-1.5.67-1.5 1.5s.67 1.5 1.5 1.5h5.5V19c0 .83.67 1.5 1.5 1.5s1.5-.67 1.5-1.5v-5.5H19c.83 0 1.5-.67 1.5-1.5s-.67-1.5-1.5-1.5z"/>
               </svg>
             ) : (
-              <div className="w-full h-full rounded-full bg-brand-cyan/15 dark:bg-brand-mint/15 shadow-[0_0_8px_rgba(20,201,184,0.2)]"></div>
+              <div className="w-full h-full rounded-full bg-sky-500/20 dark:bg-sky-400/20 shadow-[0_0_12px_rgba(56,189,248,0.25)]"></div>
             )}
           </div>
         ))}
       </div>
 
+      {/* Main Page Layout Wrapper */}
       <div className="relative z-10">
         <Navbar />
         <BreakingNews />
         
-        {/* Sections wrapped in GSAP Scroll reveal classes */}
         <div className="gsap-reveal">
           <Hero />
         </div>
