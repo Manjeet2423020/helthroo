@@ -3,35 +3,34 @@ import wellness1 from "../assets/wellness1.jpg";
 import wellness2 from "../assets/wellness2.jpg";
 
 const TABS = [
-  "Lifestyle",
-  "Beauty",
-  "Food",
-  "Parenting",
-  "Home Tips",
-  "Utility News",
-  "Travel",
-  "Home Gardening"
+  "Diet & Nutrition",
+  "Fitness & Exercise",
+  "Mental Wellness",
+  "Relationships",
+  "Healthy Aging",
+  "Sleep Health",
+  "Weight Management"
 ];
 
 const Wellness = () => {
-  const [activeTab, setActiveTab] = useState("Lifestyle");
+  const [activeTab, setActiveTab] = useState("Diet & Nutrition");
 
   return (
     <section className="px-[10%] py-16 bg-transparent">
       {/* Heading */}
-      <div className="flex justify-between items-end border-b border-slate-100 pb-6">
-        <div className="text-left">
-          <h2 className="text-4xl font-black text-[#16354A] relative inline-block font-heading">
-            Wellness
-            <span className="absolute left-0 bottom-1 w-full h-2.5 bg-[#78E5DE]/60 -z-10 rounded"></span>
+      <div className="flex justify-between items-end border-b border-slate-200/40 dark:border-slate-800/30 pb-6 text-left">
+        <div>
+          <h2 className="text-3xl font-black text-brand-dark dark:text-white relative inline-block font-heading uppercase tracking-widest">
+            Wellness Insights
+            <span className="absolute left-0 bottom-0.5 w-full h-2.5 bg-brand-accent/35 dark:bg-brand-mint/15 -z-10 rounded"></span>
           </h2>
-          <p className="text-slate-500 text-lg mt-3 font-medium">
-            Lifestyle, travel, food & more for a healthier you.
+          <p className="text-slate-500 dark:text-slate-400 text-sm mt-3 font-semibold">
+            Practical guidance for a balanced, vibrant, and healthy life.
           </p>
         </div>
 
-        <button className="text-brand-cyan font-bold text-sm hover:text-brand-mint transition-colors duration-200 uppercase tracking-wider">
-          View All Wellness →
+        <button className="text-brand-cyan dark:text-brand-mint font-black text-[10px] hover:text-brand-mint transition-colors duration-200 uppercase tracking-widest cursor-pointer">
+          View All Insights →
         </button>
       </div>
 
@@ -41,10 +40,10 @@ const Wellness = () => {
           <button
             key={tab}
             onClick={() => setActiveTab(tab)}
-            className={`px-5 py-2.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all duration-300 ${
+            className={`px-5 py-2.5 rounded-xl text-[10px] font-black uppercase tracking-wider transition-all duration-300 cursor-pointer ${
               activeTab === tab
-                ? "bg-brand-cyan text-white shadow-md shadow-brand-cyan/20"
-                : "bg-slate-50 text-slate-500 border border-slate-200/60 hover:bg-slate-100 hover:text-slate-800"
+                ? "bg-brand-cyan dark:bg-brand-mint text-white dark:text-slate-900 shadow-md shadow-brand-cyan/20 dark:shadow-brand-mint/10 border border-brand-cyan dark:border-brand-mint"
+                : "bg-white/20 dark:bg-slate-900/35 text-slate-500 dark:text-slate-400 border border-slate-200/50 dark:border-slate-800/80 hover:bg-white/40 dark:hover:bg-slate-800/50 hover:text-slate-800 dark:hover:text-slate-200"
             }`}
           >
             {tab}
@@ -58,47 +57,47 @@ const Wellness = () => {
         {/* Left Column */}
         <div className="flex flex-col gap-8 text-left">
           {/* Main Card */}
-          <div className="group border border-slate-100 bg-white rounded-2xl overflow-hidden shadow-premium shadow-hover cursor-pointer p-5">
-            <div className="overflow-hidden rounded-xl h-56">
+          <div className="group glass-card rounded-3xl overflow-hidden shadow-premium shadow-hover cursor-pointer p-5 border border-slate-200/40 dark:border-slate-800/30">
+            <div className="overflow-hidden rounded-2xl h-56">
               <img
                 src={wellness1}
-                alt="Weight Training"
+                alt="Diet Planning"
                 className="w-full h-full object-cover group-hover:scale-105 duration-500"
               />
             </div>
-            <span className="text-3xs font-extrabold tracking-wider text-brand-cyan mt-4 block uppercase">{activeTab}</span>
-            <h3 className="text-base font-extrabold text-slate-800 leading-snug mt-2 group-hover:text-brand-cyan transition-colors duration-200 font-heading">
-              90 Minutes of Weight Training May Help You Live Longer, Study Finds
+            <span className="text-[9px] font-black tracking-widest text-brand-cyan dark:text-brand-mint mt-4 block uppercase">{activeTab}</span>
+            <h3 className="text-base font-extrabold text-slate-800 dark:text-slate-200 leading-snug mt-2.5 group-hover:text-brand-cyan dark:group-hover:text-brand-mint transition-colors duration-200 font-heading">
+              Meal planning cuts dietary waste and improves heart health indices
             </h3>
           </div>
 
           {/* Small News 1 */}
-          <div className="flex gap-4 cursor-pointer group items-center p-2 rounded-xl hover:bg-slate-50 transition-colors">
+          <div className="flex gap-4 cursor-pointer group items-center p-3.5 rounded-2xl hover:bg-white/40 dark:hover:bg-slate-850/20 border border-transparent hover:border-slate-200/30 dark:hover:border-slate-800/30 transition-all duration-350">
             <img
               src={wellness2}
               alt=""
-              className="w-20 h-20 rounded-xl object-cover shrink-0 shadow-sm"
+              className="w-20 h-20 rounded-xl object-cover shrink-0 shadow-sm border border-white/10"
             />
             <div>
-              <h4 className="text-xs font-bold text-slate-800 leading-snug group-hover:text-brand-cyan duration-200 line-clamp-2">
-                Keep Your Liver Healthy with Aloe Vera: Know the Easy Ways to Consume It
+              <h4 className="text-xs font-bold text-slate-800 dark:text-slate-250 leading-snug group-hover:text-brand-cyan dark:group-hover:text-brand-mint duration-200 line-clamp-2">
+                Hydration thresholds are shifting: How much water is truly optimal?
               </h4>
-              <span className="text-[10px] text-slate-400 font-medium mt-1.5 block">2 days ago</span>
+              <span className="text-[9px] text-slate-400 dark:text-slate-500 font-black mt-2 block">2 DAYS AGO</span>
             </div>
           </div>
 
           {/* Small News 2 */}
-          <div className="flex gap-4 cursor-pointer group items-center p-2 rounded-xl hover:bg-slate-50 transition-colors">
+          <div className="flex gap-4 cursor-pointer group items-center p-3.5 rounded-2xl hover:bg-white/40 dark:hover:bg-slate-850/20 border border-transparent hover:border-slate-200/30 dark:hover:border-slate-800/30 transition-all duration-350">
             <img
               src={wellness1}
               alt=""
-              className="w-20 h-20 rounded-xl object-cover shrink-0 shadow-sm"
+              className="w-20 h-20 rounded-xl object-cover shrink-0 shadow-sm border border-white/10"
             />
             <div>
-              <h4 className="text-xs font-bold text-slate-800 leading-snug group-hover:text-brand-cyan duration-200 line-clamp-2">
-                Pregnant Women Need Extra Care During Heatwaves: Know Safety Tips
+              <h4 className="text-xs font-bold text-slate-800 dark:text-slate-250 leading-snug group-hover:text-brand-cyan dark:group-hover:text-brand-mint duration-200 line-clamp-2">
+                Anti-inflammatory foods can lessen seasonal muscle soreness
               </h4>
-              <span className="text-[10px] text-slate-400 font-medium mt-1.5 block">3 days ago</span>
+              <span className="text-[9px] text-slate-400 dark:text-slate-500 font-black mt-2 block">3 DAYS AGO</span>
             </div>
           </div>
         </div>
@@ -106,47 +105,47 @@ const Wellness = () => {
         {/* Center Column */}
         <div className="flex flex-col gap-8 text-left">
           {/* Main Card */}
-          <div className="group border border-slate-100 bg-white rounded-2xl overflow-hidden shadow-premium shadow-hover cursor-pointer p-5">
-            <div className="overflow-hidden rounded-xl h-56">
+          <div className="group glass-card rounded-3xl overflow-hidden shadow-premium shadow-hover cursor-pointer p-5 border border-slate-200/40 dark:border-slate-800/30">
+            <div className="overflow-hidden rounded-2xl h-56">
               <img
                 src={wellness2}
-                alt="Salt in Toothpaste"
+                alt="Mindfulness"
                 className="w-full h-full object-cover group-hover:scale-105 duration-500"
               />
             </div>
-            <span className="text-3xs font-extrabold tracking-wider text-brand-cyan mt-4 block uppercase">{activeTab}</span>
-            <h3 className="text-base font-extrabold text-slate-800 leading-snug mt-2 group-hover:text-brand-cyan transition-colors duration-200 font-heading">
-              Why Is Salt Added to Toothpaste? Know Its Benefits for Teeth and Gums
+            <span className="text-[9px] font-black tracking-widest text-brand-cyan dark:text-brand-mint mt-4 block uppercase">{activeTab}</span>
+            <h3 className="text-base font-extrabold text-slate-800 dark:text-slate-200 leading-snug mt-2.5 group-hover:text-brand-cyan dark:group-hover:text-brand-mint transition-colors duration-200 font-heading">
+              Mindfulness in mornings shows correlation with low daytime stress
             </h3>
           </div>
 
-          {/* Small Card 1 */}
-          <div className="flex gap-4 cursor-pointer group items-center p-2 rounded-xl hover:bg-slate-50 transition-colors">
+          {/* Small News 1 */}
+          <div className="flex gap-4 cursor-pointer group items-center p-3.5 rounded-2xl hover:bg-white/40 dark:hover:bg-slate-850/20 border border-transparent hover:border-slate-200/30 dark:hover:border-slate-800/30 transition-all duration-350">
             <img
               src={wellness1}
               alt=""
-              className="w-20 h-20 rounded-xl object-cover shrink-0 shadow-sm"
+              className="w-20 h-20 rounded-xl object-cover shrink-0 shadow-sm border border-white/10"
             />
             <div>
-              <h4 className="text-xs font-bold text-slate-800 leading-snug group-hover:text-brand-cyan duration-200 line-clamp-2">
-                Why Isn't Bad Cholesterol Decreasing Even After a Healthy Diet?
+              <h4 className="text-xs font-bold text-slate-800 dark:text-slate-250 leading-snug group-hover:text-brand-cyan dark:group-hover:text-brand-mint duration-200 line-clamp-2">
+                Active rest cycles show performance enhancement in study
               </h4>
-              <span className="text-[10px] text-slate-400 font-medium mt-1.5 block">4 days ago</span>
+              <span className="text-[9px] text-slate-400 dark:text-slate-500 font-black mt-2 block">4 DAYS AGO</span>
             </div>
           </div>
 
-          {/* Small Card 2 */}
-          <div className="flex gap-4 cursor-pointer group items-center p-2 rounded-xl hover:bg-slate-50 transition-colors">
+          {/* Small News 2 */}
+          <div className="flex gap-4 cursor-pointer group items-center p-3.5 rounded-2xl hover:bg-white/40 dark:hover:bg-slate-850/20 border border-transparent hover:border-slate-200/30 dark:hover:border-slate-800/30 transition-all duration-350">
             <img
               src={wellness2}
               alt=""
-              className="w-20 h-20 rounded-xl object-cover shrink-0 shadow-sm"
+              className="w-20 h-20 rounded-xl object-cover shrink-0 shadow-sm border border-white/10"
             />
             <div>
-              <h4 className="text-xs font-bold text-slate-800 leading-snug group-hover:text-brand-cyan duration-200 line-clamp-2">
-                Don't Ignore Erectile Dysfunction: It Could Be a Sign of Heart Disease
+              <h4 className="text-xs font-bold text-slate-800 dark:text-slate-250 leading-snug group-hover:text-brand-cyan dark:group-hover:text-brand-mint duration-200 line-clamp-2">
+                Digital detox before bed improves slow-wave sleep cycles
               </h4>
-              <span className="text-[10px] text-slate-400 font-medium mt-1.5 block">5 days ago</span>
+              <span className="text-[9px] text-slate-400 dark:text-slate-500 font-black mt-2 block">5 DAYS AGO</span>
             </div>
           </div>
         </div>
@@ -154,47 +153,47 @@ const Wellness = () => {
         {/* Right Column */}
         <div className="flex flex-col gap-8 text-left">
           {/* Main Card */}
-          <div className="group border border-slate-100 bg-white rounded-2xl overflow-hidden shadow-premium shadow-hover cursor-pointer p-5">
-            <div className="overflow-hidden rounded-xl h-56">
+          <div className="group glass-card rounded-3xl overflow-hidden shadow-premium shadow-hover cursor-pointer p-5 border border-slate-200/40 dark:border-slate-800/30">
+            <div className="overflow-hidden rounded-2xl h-56">
               <img
                 src={wellness1}
-                alt="Heart Disease Sign"
+                alt="Fiber Rich Foods"
                 className="w-full h-full object-cover group-hover:scale-105 duration-500"
               />
             </div>
-            <span className="text-3xs font-extrabold tracking-wider text-brand-cyan mt-4 block uppercase">{activeTab}</span>
-            <h3 className="text-base font-extrabold text-slate-800 leading-snug mt-2 group-hover:text-brand-cyan transition-colors duration-200 font-heading">
-              Don't Ignore Erectile Dysfunction: Heart Disease and Diabetes Signals
+            <span className="text-[9px] font-black tracking-widest text-brand-cyan dark:text-brand-mint mt-4 block uppercase">{activeTab}</span>
+            <h3 className="text-base font-extrabold text-slate-800 dark:text-slate-200 leading-snug mt-2.5 group-hover:text-brand-cyan dark:group-hover:text-brand-mint transition-colors duration-200 font-heading">
+              Fiber-rich foods optimize gut microbiome diversity in trials
             </h3>
           </div>
 
-          {/* Small Card 1 */}
-          <div className="flex gap-4 cursor-pointer group items-center p-2 rounded-xl hover:bg-slate-50 transition-colors">
+          {/* Small News 1 */}
+          <div className="flex gap-4 cursor-pointer group items-center p-3.5 rounded-2xl hover:bg-white/40 dark:hover:bg-slate-850/20 border border-transparent hover:border-slate-200/30 dark:hover:border-slate-800/30 transition-all duration-350">
             <img
               src={wellness2}
               alt=""
-              className="w-20 h-20 rounded-xl object-cover shrink-0 shadow-sm"
+              className="w-20 h-20 rounded-xl object-cover shrink-0 shadow-sm border border-white/10"
             />
             <div>
-              <h4 className="text-xs font-bold text-slate-800 leading-snug group-hover:text-brand-cyan duration-200 line-clamp-2">
-                Include Watermelon in Your Summer Diet, Make a Healthy Cold Soup
+              <h4 className="text-xs font-bold text-slate-800 dark:text-slate-250 leading-snug group-hover:text-brand-cyan dark:group-hover:text-brand-mint duration-200 line-clamp-2">
+                Desk ergonomics: Reducing postural stress in hybrid workers
               </h4>
-              <span className="text-[10px] text-slate-400 font-medium mt-1.5 block">6 days ago</span>
+              <span className="text-[9px] text-slate-400 dark:text-slate-500 font-black mt-2 block">6 DAYS AGO</span>
             </div>
           </div>
 
-          {/* Small Card 2 */}
-          <div className="flex gap-4 cursor-pointer group items-center p-2 rounded-xl hover:bg-slate-50 transition-colors">
+          {/* Small News 2 */}
+          <div className="flex gap-4 cursor-pointer group items-center p-3.5 rounded-2xl hover:bg-white/40 dark:hover:bg-slate-850/20 border border-transparent hover:border-slate-200/30 dark:hover:border-slate-800/30 transition-all duration-350">
             <img
               src={wellness1}
               alt=""
-              className="w-20 h-20 rounded-xl object-cover shrink-0 shadow-sm"
+              className="w-20 h-20 rounded-xl object-cover shrink-0 shadow-sm border border-white/10"
             />
             <div>
-              <h4 className="text-xs font-bold text-slate-800 leading-snug group-hover:text-brand-cyan duration-200 line-clamp-2">
-                How Many Times a Week Should You Oil Your Hair? Know the Right Way
+              <h4 className="text-xs font-bold text-slate-800 dark:text-slate-250 leading-snug group-hover:text-brand-cyan dark:group-hover:text-brand-mint duration-200 line-clamp-2">
+                Nutrient density is replacing calorie counting in modern plans
               </h4>
-              <span className="text-[10px] text-slate-400 font-medium mt-1.5 block">1 week ago</span>
+              <span className="text-[9px] text-slate-400 dark:text-slate-500 font-black mt-2 block">1 WEEK AGO</span>
             </div>
           </div>
         </div>

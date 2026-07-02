@@ -37,31 +37,31 @@ const StateNews = () => {
     <section className="px-[10%] py-16 bg-transparent">
       {/* Heading */}
       <div className="text-left">
-        <h2 className="text-4xl font-black text-[#16354A] relative inline-block font-heading">
+        <h2 className="text-3xl font-black text-brand-dark dark:text-white relative inline-block font-heading uppercase tracking-widest">
           State News
-          <span className="absolute left-0 bottom-1 w-full h-2.5 bg-[#78E5DE]/60 -z-10 rounded"></span>
+          <span className="absolute left-0 bottom-0.5 w-full h-2.5 bg-brand-accent/35 dark:bg-brand-mint/15 -z-10 rounded"></span>
         </h2>
-        <p className="text-slate-500 text-lg mt-3 font-medium">
+        <p className="text-slate-500 dark:text-slate-400 text-sm mt-3 font-semibold">
           Latest updates from every state across India.
         </p>
       </div>
 
       {/* Tabs Bar */}
-      <div className="mt-10 border border-slate-100 bg-white rounded-xl shadow-premium overflow-hidden">
+      <div className="mt-10 border border-slate-200/40 dark:border-slate-800/30 glass-panel rounded-2xl overflow-hidden shadow-premium">
         <div className="flex items-center justify-between">
-          <button className="w-12 h-14 border-r border-slate-100 flex items-center justify-center text-slate-400 hover:bg-slate-50 transition-colors shrink-0">
+          <button className="w-12 h-14 border-r border-slate-200/40 dark:border-slate-800/40 flex items-center justify-center text-slate-450 dark:text-slate-400 hover:bg-white/20 dark:hover:bg-slate-800/20 transition-colors shrink-0 cursor-pointer">
             <FiChevronLeft size={20} />
           </button>
           
-          <div className="flex flex-1 overflow-x-auto scrollbar-hide">
+          <div className="flex flex-1 overflow-x-auto scrollbar-hide bg-transparent">
             {TABS.map((tab) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`px-6 h-14 text-xs font-extrabold uppercase tracking-wider shrink-0 transition-all duration-300 border-b-2 ${
+                className={`px-6 h-14 text-[10px] font-black uppercase tracking-widest shrink-0 transition-all duration-300 border-b-2 cursor-pointer ${
                   activeTab === tab
-                    ? "text-brand-cyan border-brand-cyan bg-brand-cyan/5"
-                    : "text-slate-500 border-transparent hover:text-slate-800 hover:bg-slate-50/50"
+                    ? "text-brand-cyan dark:text-brand-mint border-brand-cyan dark:border-brand-mint bg-brand-cyan/5 dark:bg-brand-mint/5"
+                    : "text-slate-500 dark:text-slate-400 border-transparent hover:text-slate-850 dark:hover:text-slate-200 hover:bg-white/10 dark:hover:bg-slate-800/10"
                 }`}
               >
                 {tab}
@@ -69,7 +69,7 @@ const StateNews = () => {
             ))}
           </div>
 
-          <button className="w-12 h-14 border-l border-slate-100 flex items-center justify-center text-slate-400 hover:bg-slate-50 transition-colors shrink-0">
+          <button className="w-12 h-14 border-l border-slate-200/40 dark:border-slate-800/40 flex items-center justify-center text-slate-450 dark:text-slate-400 hover:bg-white/20 dark:hover:bg-slate-800/20 transition-colors shrink-0 cursor-pointer">
             <FiChevronRight size={20} />
           </button>
         </div>
@@ -78,51 +78,51 @@ const StateNews = () => {
       {/* Main Grid Layout */}
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mt-8">
         
-        {/* Left Featured Card (col-span-4) */}
-        <div className="lg:col-span-4 border border-slate-100 bg-white rounded-2xl overflow-hidden shadow-premium group cursor-pointer shadow-hover text-left flex flex-col justify-between">
+        {/* Left Featured Card */}
+        <div className="lg:col-span-4 border border-slate-200/40 dark:border-slate-800/30 glass-card rounded-3xl overflow-hidden shadow-premium group cursor-pointer shadow-hover text-left flex flex-col justify-between">
           <div>
-            <div className="relative overflow-hidden h-[260px]">
+            <div className="relative overflow-hidden h-[260px] rounded-t-3xl">
               <img
                 src={state1}
                 alt="ILBS Director Sarin"
                 className="w-full h-full object-cover group-hover:scale-105 duration-500"
               />
-              <span className="absolute top-4 left-4 bg-brand-cyan text-white px-3 py-1 text-3xs font-extrabold uppercase tracking-widest rounded-md">
+              <span className="absolute top-4 left-4 bg-brand-cyan dark:bg-brand-mint text-white dark:text-slate-900 px-3 py-1 text-[9px] font-black uppercase tracking-widest rounded-md">
                 {activeTab}
               </span>
             </div>
             
             <div className="p-6">
-              <h3 className="text-lg font-extrabold text-slate-800 leading-snug font-heading group-hover:text-brand-cyan transition-colors duration-200">
+              <h3 className="text-base font-extrabold text-slate-850 dark:text-slate-200 leading-snug font-heading group-hover:text-brand-cyan dark:group-hover:text-brand-mint transition-colors duration-200">
                 ILBS Director Dr. Sarin's Advice: Enjoy Medicine and Always Keep a Learning Mindset
               </h3>
-              <p className="text-slate-500 text-xs leading-relaxed mt-3 line-clamp-4 font-medium">
+              <p className="text-slate-500 dark:text-slate-400 text-xs leading-relaxed mt-3 line-clamp-4 font-semibold">
                 New Delhi: Ahead of National Doctors' Day 2026, Dr. Shiv Kumar Sarin, Founder Director of the Institute of Liver and Biliary Sciences (ILBS), shared an important message for young doctors and medical students.
               </p>
             </div>
           </div>
 
           <div className="p-6 pt-0">
-            <button className="w-full py-3 bg-brand-cyan/10 hover:bg-brand-cyan hover:text-white text-brand-cyan text-xs font-bold uppercase tracking-wider rounded-xl transition-all duration-300 flex items-center justify-center gap-2">
+            <button className="w-full py-3 bg-brand-cyan/10 hover:bg-brand-cyan dark:bg-brand-mint/10 dark:hover:bg-brand-mint hover:text-white dark:hover:text-slate-900 text-brand-cyan dark:text-brand-mint text-[10px] font-black uppercase tracking-widest rounded-xl transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer border border-brand-cyan/25 dark:border-brand-mint/20 hover:shadow-lg">
               Read Full Article <span>→</span>
             </button>
           </div>
         </div>
 
-        {/* Middle News Feed (col-span-5) */}
-        <div className="lg:col-span-5 border border-slate-100 bg-white rounded-2xl overflow-hidden shadow-premium flex flex-col divide-y divide-slate-100 text-left">
+        {/* Middle News Feed */}
+        <div className="lg:col-span-5 border border-slate-200/40 dark:border-slate-800/30 glass-card rounded-3xl overflow-hidden shadow-premium flex flex-col divide-y divide-slate-200/30 dark:divide-slate-800/40 text-left">
           {newsList.map((news) => (
-            <div key={news.id} className="flex gap-4 p-5 hover:bg-slate-50/50 transition-colors duration-200 cursor-pointer items-center">
+            <div key={news.id} className="flex gap-4 p-5 hover:bg-white/30 dark:hover:bg-slate-850/20 transition-colors duration-200 cursor-pointer items-center">
               <img
                 src={news.image}
                 alt=""
-                className="w-20 h-20 object-cover rounded-xl shrink-0 shadow-sm"
+                className="w-20 h-20 object-cover rounded-xl shrink-0 shadow-sm border border-white/10"
               />
               <div>
-                <h4 className="text-sm font-bold text-slate-800 leading-snug hover:text-brand-cyan transition-colors duration-200 line-clamp-2">
+                <h4 className="text-sm font-bold text-slate-850 dark:text-slate-200 leading-snug hover:text-brand-cyan dark:hover:text-brand-mint transition-colors duration-200 line-clamp-2">
                   {news.title}
                 </h4>
-                <span className="text-3xs font-extrabold tracking-wider text-slate-400 mt-2 block uppercase">
+                <span className="text-[9px] font-black tracking-widest text-slate-450 dark:text-slate-500 mt-2 block uppercase">
                   {activeTab} • 2 HOURS AGO
                 </span>
               </div>
@@ -130,30 +130,30 @@ const StateNews = () => {
           ))}
         </div>
 
-        {/* Right Janta Reporter Sidebar (col-span-3) */}
-        <div className="lg:col-span-3 border border-slate-100 bg-white rounded-2xl overflow-hidden shadow-premium flex flex-col text-left">
+        {/* Right Janta Reporter Sidebar */}
+        <div className="lg:col-span-3 border border-slate-200/40 dark:border-slate-800/30 glass-card rounded-3xl overflow-hidden shadow-premium flex flex-col text-left">
           {/* Header */}
-          <div className="bg-brand-dark text-brand-accent flex items-center gap-2 px-6 py-4">
-            <FiVolume2 className="text-lg animate-pulse" />
-            <h3 className="text-xs font-black tracking-widest uppercase font-heading">
+          <div className="bg-brand-dark/95 dark:bg-slate-900 text-brand-accent dark:text-brand-mint flex items-center gap-2 px-6 py-4 border-b border-slate-200/10 dark:border-slate-800/50">
+            <FiVolume2 className="text-base animate-pulse" />
+            <h3 className="text-[10px] font-black tracking-widest uppercase font-heading">
               Janta Reporter
             </h3>
           </div>
 
           {/* List */}
-          <div className="divide-y divide-slate-100 flex-1 flex flex-col justify-between py-2">
+          <div className="divide-y divide-slate-200/30 dark:divide-slate-800/40 flex-1 flex flex-col justify-between py-2 bg-transparent">
             {reporterNews.map((news) => (
-              <div key={news.id} className="flex gap-3 px-5 py-3.5 hover:bg-slate-50 transition-colors duration-150 cursor-pointer">
+              <div key={news.id} className="flex gap-3 px-5 py-3.5 hover:bg-white/30 dark:hover:bg-slate-850/20 transition-colors duration-150 cursor-pointer">
                 <img
                   src={reporter}
                   alt=""
-                  className="w-12 h-12 object-cover rounded-lg shrink-0 shadow-sm"
+                  className="w-12 h-12 object-cover rounded-lg shrink-0 shadow-sm border border-white/10"
                 />
                 <div>
-                  <h4 className="text-xs font-bold text-slate-700 leading-snug line-clamp-2 hover:text-brand-cyan transition-colors duration-200">
+                  <h4 className="text-xs font-bold text-slate-750 dark:text-slate-250 leading-snug line-clamp-2 hover:text-brand-cyan dark:hover:text-brand-mint transition-colors duration-200">
                     {news.title}
                   </h4>
-                  <span className="text-[10px] font-extrabold tracking-wider text-slate-400 mt-1 block uppercase">
+                  <span className="text-[9px] font-black tracking-widest text-slate-400 mt-1 block uppercase">
                     CIVIC NEWS
                   </span>
                 </div>
@@ -162,8 +162,8 @@ const StateNews = () => {
           </div>
 
           {/* View All */}
-          <div className="p-4 border-t border-slate-100 bg-slate-50/50 flex justify-center">
-            <button className="text-brand-cyan font-bold text-xs hover:text-brand-mint duration-200 uppercase tracking-widest">
+          <div className="p-4 border-t border-slate-200/40 dark:border-slate-800/40 bg-white/20 dark:bg-slate-900/10 flex justify-center">
+            <button className="text-brand-cyan dark:text-brand-mint font-black text-[10px] hover:translate-x-1 duration-200 uppercase tracking-widest cursor-pointer">
               View All Reports →
             </button>
           </div>

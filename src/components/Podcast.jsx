@@ -40,36 +40,40 @@ const PODCASTS = [
 
 const Podcast = () => {
   return (
-    <section className="px-[10%] py-16 bg-[#16354A] text-white">
+    <section className="mx-[10%] my-16 bg-[#081524] text-white rounded-3xl p-8 md:p-12 border border-white/5 shadow-premium shadow-hover relative overflow-hidden">
+      
+      {/* Decorative aura spot */}
+      <div className="absolute top-[-30%] right-[-10%] w-96 h-96 bg-brand-cyan/20 rounded-full blur-[100px] pointer-events-none"></div>
+
       {/* Heading */}
-      <div className="flex justify-between items-end border-b border-white/10 pb-6">
+      <div className="flex justify-between items-end border-b border-white/10 pb-6 relative z-10">
         <div className="text-left">
-          <h2 className="text-4xl font-black text-white relative inline-block font-heading">
+          <h2 className="text-3xl font-black text-white relative inline-block font-heading uppercase tracking-widest">
             Health Podcasts
-            <span className="absolute left-0 bottom-1 w-full h-2.5 bg-[#77E6DE]/40 -z-10 rounded"></span>
+            <span className="absolute left-0 bottom-0.5 w-full h-2.5 bg-brand-cyan/40 -z-10 rounded"></span>
           </h2>
-          <p className="text-slate-300 text-lg mt-3 font-medium">
+          <p className="text-slate-350 text-sm mt-3 font-semibold">
             Every health conversation, with expert insights.
           </p>
         </div>
 
-        {/* Buttons */}
+        {/* Navigation Buttons */}
         <div className="flex gap-3">
-          <button className="w-10 h-10 rounded-full border border-white/20 text-slate-300 flex items-center justify-center hover:bg-brand-cyan hover:text-white hover:border-brand-cyan transition-all duration-300">
+          <button className="w-11 h-11 rounded-full border border-white/15 text-slate-300 flex items-center justify-center hover:bg-brand-cyan hover:text-white hover:border-brand-cyan transition-all duration-300 cursor-pointer">
             <FiChevronLeft size={18} />
           </button>
-          <button className="w-10 h-10 rounded-full border border-white/20 text-slate-300 flex items-center justify-center hover:bg-brand-cyan hover:text-white hover:border-brand-cyan transition-all duration-300">
+          <button className="w-11 h-11 rounded-full border border-white/15 text-slate-300 flex items-center justify-center hover:bg-brand-cyan hover:text-white hover:border-brand-cyan transition-all duration-300 cursor-pointer">
             <FiChevronRight size={18} />
           </button>
         </div>
       </div>
 
-      {/* Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mt-10">
+      {/* Cards Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mt-10 relative z-10">
         {PODCASTS.map((podcast) => (
           <div
             key={podcast.id}
-            className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl overflow-hidden shadow-premium group cursor-pointer hover:border-brand-accent/30 hover:bg-white/10 duration-300 flex flex-col text-left"
+            className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl overflow-hidden shadow-premium group cursor-pointer hover:border-brand-mint/40 hover:bg-white/10 duration-300 flex flex-col text-left"
           >
             {/* Image & Play Button overlay */}
             <div className="relative overflow-hidden aspect-[4/3]">
@@ -78,28 +82,28 @@ const Podcast = () => {
                 alt={podcast.title}
                 className="w-full h-full object-cover group-hover:scale-105 duration-500"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent"></div>
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-950/80 to-transparent"></div>
               
               {/* Play Button */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-brand-cyan flex items-center justify-center shadow-lg group-hover:scale-110 transition-all duration-300">
-                <FaPlay className="text-white text-base ml-1" />
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-brand-cyan flex items-center justify-center shadow-lg group-hover:scale-110 group-hover:bg-brand-mint group-hover:shadow-[0_0_15px_rgba(20,201,184,0.5)] transition-all duration-300">
+                <FaPlay className="text-white group-hover:text-slate-900 text-sm ml-1" />
               </div>
             </div>
 
             {/* Content */}
             <div className="p-5 flex flex-col justify-between flex-1">
               <div>
-                <span className="text-[10px] font-extrabold text-brand-accent uppercase tracking-wider">
+                <span className="text-[9px] font-black text-brand-mint uppercase tracking-widest">
                   {podcast.category}
                 </span>
-                <h3 className="text-sm font-bold text-white mt-2 leading-snug font-heading group-hover:text-brand-accent transition-colors duration-200 line-clamp-2">
+                <h3 className="text-sm font-extrabold text-white mt-2 leading-snug font-heading group-hover:text-brand-mint transition-colors duration-200 line-clamp-2">
                   {podcast.title}
                 </h3>
               </div>
               
-              <div className="flex justify-between items-center mt-5 pt-3 border-t border-white/10 text-slate-400 text-3xs font-semibold uppercase tracking-wider">
+              <div className="flex justify-between items-center mt-5 pt-3 border-t border-white/10 text-slate-400 text-[10px] font-bold uppercase tracking-wider">
                 <span>{podcast.date}</span>
-                <span className="bg-white/10 px-2 py-0.5 rounded text-white">{podcast.duration}</span>
+                <span className="bg-white/10 px-2.5 py-0.5 rounded text-white text-[9px] font-black">{podcast.duration}</span>
               </div>
             </div>
           </div>

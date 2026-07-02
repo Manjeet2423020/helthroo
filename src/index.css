@@ -21,13 +21,33 @@
   }
 }
 
+/* Base Body overrides */
 body {
   margin: 0;
   font-family: var(--font-sans);
-  background-color: #f6f9f9;
+  background-color: #f3f8f8;
   color: #1e293b;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Premium Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(13, 122, 114, 0.05);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(13, 122, 114, 0.2);
+  border-radius: 9999px;
+  transition: all 0.3s ease;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(20, 201, 184, 0.45);
 }
 
 /* Custom Scrollbar Hide Utility */
@@ -39,141 +59,213 @@ body {
   scrollbar-width: none;
 }
 
-/* Glassmorphism Classes */
+/* Glassmorphism Styles */
 .glass-nav {
-  background: rgba(255, 255, 255, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.4);
 }
 
 .glass-card {
-  background: rgba(255, 255, 255, 0.7);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.5);
+  background: rgba(255, 255, 255, 0.65);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.45);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Premium shadows */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+/* Premium shadows & animations */
 .shadow-premium {
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.03);
+  box-shadow: 0 8px 32px 0 rgba(13, 122, 114, 0.03);
 }
 
 .shadow-hover {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 .shadow-hover:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 30px rgba(13, 122, 114, 0.08);
+  transform: translateY(-5px) scale(1.015);
+  box-shadow: 0 16px 36px rgba(13, 122, 114, 0.1), 
+              0 0 0 1px rgba(20, 201, 184, 0.2);
 }
 
-/* Ambient Floating Background Animations */
+/* Background blob animator */
 @keyframes blob-float-1 {
   0%, 100% {
     transform: translate(0px, 0px) scale(1);
+    filter: opacity(0.85);
   }
   33% {
-    transform: translate(60px, -80px) scale(1.2);
+    transform: translate(80px, -100px) scale(1.25);
+    filter: opacity(1);
   }
   66% {
-    transform: translate(-40px, 40px) scale(0.9);
+    transform: translate(-60px, 60px) scale(0.85);
+    filter: opacity(0.75);
   }
 }
 
 @keyframes blob-float-2 {
   0%, 100% {
     transform: translate(0px, 0px) scale(1);
+    filter: opacity(0.75);
   }
   33% {
-    transform: translate(-80px, 50px) scale(0.85);
+    transform: translate(-100px, 70px) scale(0.8);
+    filter: opacity(0.95);
   }
   66% {
-    transform: translate(50px, -60px) scale(1.15);
+    transform: translate(70px, -80px) scale(1.2);
+    filter: opacity(0.85);
   }
 }
 
 .animate-blob-1 {
-  animation: blob-float-1 25s infinite ease-in-out;
+  animation: blob-float-1 20s infinite ease-in-out;
 }
 
 .animate-blob-2 {
-  animation: blob-float-2 30s infinite ease-in-out;
+  animation: blob-float-2 25s infinite ease-in-out;
 }
 
-/* Global Dark Mode Overrides */
+/* Floating Health Particles Keyframes & Classes */
+.animate-float-particle-1 {
+  animation: float-particle-1 var(--particle-duration, 20s) infinite ease-in-out;
+  animation-delay: var(--particle-delay, 0s);
+}
+
+.animate-float-particle-2 {
+  animation: float-particle-2 var(--particle-duration, 24s) infinite ease-in-out;
+  animation-delay: var(--particle-delay, 0s);
+}
+
+@keyframes float-particle-1 {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0.15;
+  }
+  50% {
+    transform: translateY(-40px) rotate(180deg);
+    opacity: 0.55;
+  }
+}
+
+@keyframes float-particle-2 {
+  0%, 100% {
+    transform: translate(0, 0) scale(0.9);
+    opacity: 0.12;
+  }
+  50% {
+    transform: translate(30px, -50px) scale(1.2);
+    opacity: 0.45;
+  }
+}
+
+/* Text Accent Highlights */
+.text-gradient {
+  background: linear-gradient(135deg, var(--color-brand-cyan), var(--color-brand-mint));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* GLOBAL DARK MODE OVERRIDES */
 .dark body {
-  background-color: #0b0f19 !important; /* Premium ultra-dark slate */
+  background-color: #070a13 !important; /* Deep space slate */
   color: #f1f5f9 !important;
 }
 
-.dark .bg-white {
-  background-color: rgba(17, 24, 39, 0.75) !important; /* Translucent glassmorphic slate-900 */
+.dark .glass-nav {
+  background: rgba(10, 15, 30, 0.7) !important;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06) !important;
+}
+
+.dark .glass-card {
+  background: rgba(15, 23, 42, 0.5) !important;
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border-color: rgba(51, 65, 85, 0.4) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #f8fafc !important;
+}
+
+.dark .glass-panel {
+  background: rgba(15, 23, 42, 0.4) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+}
+
+/* Auto-transform standard layouts for dark mode compatibility */
+.dark .bg-white {
+  background-color: rgba(15, 23, 42, 0.45) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-color: rgba(255, 255, 255, 0.07) !important;
   color: #f8fafc !important;
 }
 
 .dark .text-slate-800,
 .dark .text-slate-700,
+.dark .text-[#142F45],
+.dark .text-[#14384A],
+.dark .text-[#13344A],
+.dark .text-[#163645],
+.dark .text-[#16354A],
 .dark .text-\[rgb\(20\,47\,69\)\] {
-  color: #f8fafc !important;
-}
-
-.dark .text-\[\#142F45\],
-.dark .text-\[\#14384A\],
-.dark .text-\[\#13344A\],
-.dark .text-\[\#163645\],
-.dark .text-\[\#16354A\] {
   color: #f8fafc !important;
 }
 
 .dark .text-slate-500,
 .dark .text-slate-600,
 .dark .text-gray-500 {
-  color: #94a3b8 !important; /* Soft muted slate for descriptions */
+  color: #94a3b8 !important;
 }
 
 .dark .border-slate-100,
 .dark .border-slate-200,
-.dark .border-slate-200\/60,
-.dark .border-slate-200\/80 {
-  border-color: rgba(51, 65, 85, 0.4) !important;
+.dark .border-slate-200/60,
+.dark .border-slate-200/80 {
+  border-color: rgba(255, 255, 255, 0.07) !important;
 }
 
 .dark .bg-slate-50,
-.dark .bg-slate-50\/50,
-.dark .bg-slate-50\/30 {
-  background-color: rgba(15, 23, 42, 0.6) !important;
-  border-color: rgba(51, 65, 85, 0.4) !important;
+.dark .bg-slate-50/50,
+.dark .bg-slate-50/30 {
+  background-color: rgba(10, 15, 30, 0.5) !important;
+  border-color: rgba(255, 255, 255, 0.07) !important;
 }
 
-.dark .bg-\[\#FAFEFE\],
-.dark .bg-\[\#F8FBFB\],
-.dark .bg-white\/5 {
-  background-color: rgba(15, 23, 42, 0.45) !important;
+.dark .bg-[#FAFEFE],
+.dark .bg-[#F8FBFB] {
+  background-color: rgba(10, 15, 30, 0.3) !important;
 }
 
-.dark .border-\[\#D7E7E7\],
-.dark .border-\[\#C7E4E3\] {
-  border-color: rgba(51, 65, 85, 0.3) !important;
-}
-
-.dark .bg-\[\#16354A\] {
-  background-color: rgba(15, 23, 42, 0.8) !important;
-  border: 1px solid rgba(51, 65, 85, 0.4);
+.dark .border-[#D7E7E7],
+.dark .border-[#C7E4E3] {
+  border-color: rgba(255, 255, 255, 0.06) !important;
 }
 
 .dark input, 
 .dark select, 
 .dark textarea {
-  background-color: rgba(15, 23, 42, 0.6) !important;
-  border-color: rgba(51, 65, 85, 0.6) !important;
+  background-color: rgba(10, 15, 30, 0.6) !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
   color: #f8fafc !important;
 }
 
 .dark .shadow-premium {
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.25) !important;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.25) !important;
 }
 
-
-
+.dark .shadow-hover:hover {
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4), 
+              0 0 0 1px rgba(20, 201, 184, 0.3) !important;
+}
