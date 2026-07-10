@@ -8,6 +8,17 @@ import TagPage from "./pages/TagPage";
 import NotFound from "./pages/NotFound";
 import ScrollToTop from "./components/ScrollToTop";
 
+// Authentication & Member System Pages
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
+import VerifyEmail from "./pages/VerifyEmail";
+import Profile from "./pages/Profile";
+import Dashboard from "./pages/Dashboard";
+import Membership from "./pages/Membership";
+import ProtectedRoute from "./components/ProtectedRoute";
+
 function App() {
   return (
     <BrowserRouter>
@@ -23,6 +34,32 @@ function App() {
           <Route path="news/:slug" element={<ArticleDetail />} />
           <Route path="category/:category" element={<CategoryPage />} />
           <Route path="tag/:tag" element={<TagPage />} />
+
+          {/* Authentication Routes */}
+          <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
+          <Route path="forgot-password" element={<ForgotPassword />} />
+          <Route path="reset-password" element={<ResetPassword />} />
+          <Route path="verify-email" element={<VerifyEmail />} />
+          <Route path="membership" element={<Membership />} />
+
+          {/* Protected Routes */}
+          <Route
+            path="dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="profile"
+            element={
+              <ProtectedRoute>
+                <Profile />
+              </ProtectedRoute>
+            }
+          />
           
           {/* 404 handler */}
           <Route path="*" element={<NotFound />} />

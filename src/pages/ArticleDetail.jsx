@@ -6,6 +6,7 @@ import Container from "../components/Container";
 import SectionTitle from "../components/SectionTitle";
 import Button from "../components/Button";
 import { useLanguage } from "../context/LanguageContext";
+import { useAuth } from "../context/AuthContext";
 import { FaTwitter, FaFacebookF, FaLinkedinIn } from "react-icons/fa";
 import {
   FiClock,
@@ -23,31 +24,35 @@ const ArticleDetail = () => {
   const { t } = useLanguage();
   const { slug } = useParams();
   const [copied, setCopied] = useState(false);
-  const [liked, setLiked] = useState(false);
-  const [likesCount, setLikesCount] = useState(0);
-  const [bookmarked, setBookmarked] = useState(false);
   const [scrollProgress, setScrollProgress] = useState(0);
+
+  const {
+    user,
+    toggleSaveArticle,
+    toggleBookmarkArticle,
+    toggleLikeArticle,
+    addToHistory
+  } = useAuth();
 
   // Retrieve matching article
   const article = ARTICLES.find((item) => item.slug === slug) || ARTICLES[0];
 
+  const isLiked = user?.likedArticles?.includes(article?.slug) || false;
+  const isBookmarked = user?.bookmarks?.includes(article?.slug) || false;
+  const isSaved = user?.savedArticles?.includes(article?.slug) || false;
+
+  const isPremiumArticle = article?.premium === true;
+  const isLocked = isPremiumArticle && user?.memberLevel !== "premium";
+
+  // Track Likes count locally to visually increment/decrement nicely
+  const [likesCount, setLikesCount] = useState(0);
+
   useEffect(() => {
     if (article) {
       setLikesCount(article.likes || 120);
-      setLiked(false);
-      setBookmarked(false);
+      addToHistory(article.slug);
     }
-  }, [slug, article]);
-
-  const handleLikeToggle = () => {
-    if (liked) {
-      setLiked(false);
-      setLikesCount((prev) => prev - 1);
-    } else {
-      setLiked(true);
-      setLikesCount((prev) => prev + 1);
-    }
-  };
+  }, [slug, article, addToHistory]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -156,9 +161,55 @@ const ArticleDetail = () => {
 
             {/* Article Content Body */}
             <div className="mt-8 text-slate-650 dark:text-slate-300 text-sm leading-relaxed space-y-6 font-semibold max-w-none">
-              {article.content.split("\n\n").map((para, idx) => (
-                <p key={idx}>{para}</p>
-              ))}
+              {isLocked ? (
+                <>
+                  <p>{article.content.split("\n\n")[0]}</p>
+                  
+                  {/* Blur effect on subsequent content */}
+                  <div className="relative pt-6 pb-24 overflow-hidden">
+                    <div className="blur-[5px] select-none pointer-events-none opacity-40">
+                      {article.content.split("\n\n").slice(1).map((para, idx) => (
+                        <p className="mt-4" key={idx}>{para}</p>
+                      ))}
+                    </div>
+                    
+                    {/* Paywall Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-white via-white/95 to-transparent dark:from-slate-950 dark:via-slate-950/95 dark:to-transparent flex flex-col items-center justify-end p-4 sm:p-8 text-center">
+                      <div className="glass-premium p-6 sm:p-8 rounded-3xl border border-slate-200/50 dark:border-slate-800/50 shadow-2xl max-w-md w-full relative">
+                        <span className="bg-gradient-to-r from-amber-500 to-rose-500 text-slate-950 text-[8px] font-black tracking-widest px-3 py-1 rounded-full uppercase absolute -top-3.5 left-1/2 -translate-x-1/2 shadow-lg">
+                          {t("Premium Article Exclusive")}
+                        </span>
+                        <h3 className="text-sm sm:text-base font-black text-slate-850 dark:text-white uppercase tracking-widest font-heading mt-2">
+                          {t("Unlock Premium Report")}
+                        </h3>
+                        <p className="text-slate-500 dark:text-slate-400 text-[11px] sm:text-xs mt-3 leading-relaxed font-semibold">
+                          {t("This clinical study is reserved for Helthroo Premium members. Upgrade to get instant access to all studies, calculators, and custom metrics.")}
+                        </p>
+                        <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center">
+                          <Link
+                            to="/membership"
+                            className="bg-gradient-to-r from-amber-500 to-rose-500 hover:from-amber-450 hover:to-rose-450 text-slate-950 font-black text-[9px] uppercase tracking-widest px-5 py-3 rounded-xl transition-all duration-300 cursor-pointer shadow-md text-center"
+                          >
+                            {t("Upgrade to Premium")}
+                          </Link>
+                          {!user && (
+                            <Link
+                              to="/login"
+                              className="bg-white/10 hover:bg-white/20 border border-slate-250/65 dark:border-slate-800/60 text-slate-850 dark:text-slate-200 font-black text-[9px] uppercase tracking-widest px-5 py-3 rounded-xl transition-all duration-300 cursor-pointer text-center"
+                            >
+                              {t("Sign In")}
+                            </Link>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              ) : (
+                article.content.split("\n\n").map((para, idx) => (
+                  <p key={idx}>{para}</p>
+                ))
+              )}
             </div>
 
             {/* Article Tags */}
@@ -178,24 +229,36 @@ const ArticleDetail = () => {
 
             {/* Action Bar (Share, Like, Bookmark) */}
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mt-8 p-4 rounded-2xl bg-white/20 dark:bg-slate-900/30 border border-slate-200/40 dark:border-slate-800/35">
-              <div className="flex gap-2">
+              <div className="flex flex-wrap gap-2">
                 <Button
                   variant="outline"
-                  color={liked ? "emerald" : "slate"}
-                  onClick={handleLikeToggle}
+                  color={isLiked ? "emerald" : "slate"}
+                  onClick={() => {
+                    toggleLikeArticle(article.slug);
+                    setLikesCount((prev) => (isLiked ? prev - 1 : prev + 1));
+                  }}
                   className="h-9 px-4 rounded-xl text-[10px]"
                 >
-                  <FiHeart className={liked ? "fill-emerald-500 text-emerald-500 animate-pulse" : ""} />
-                  <span>{liked ? `${t("Liked")} (${likesCount})` : `${t("Like")} (${likesCount})`}</span>
+                  <FiHeart className={isLiked ? "fill-emerald-500 text-emerald-500 animate-pulse" : ""} />
+                  <span>{isLiked ? `${t("Liked")} (${likesCount})` : `${t("Like")} (${likesCount})`}</span>
                 </Button>
                 <Button
                   variant="outline"
-                  color={bookmarked ? "teal" : "slate"}
-                  onClick={() => setBookmarked(!bookmarked)}
+                  color={isBookmarked ? "teal" : "slate"}
+                  onClick={() => toggleBookmarkArticle(article.slug)}
                   className="h-9 px-4 rounded-xl text-[10px]"
                 >
-                  <FiBookmark className={bookmarked ? "fill-teal-500 text-teal-500" : ""} />
-                  <span>{bookmarked ? t("Bookmarked") : t("Bookmark")}</span>
+                  <FiBookmark className={isBookmarked ? "fill-teal-500 text-teal-500" : ""} />
+                  <span>{isBookmarked ? t("Bookmarked") : t("Bookmark")}</span>
+                </Button>
+                <Button
+                  variant="outline"
+                  color={isSaved ? "purple" : "slate"}
+                  onClick={() => toggleSaveArticle(article.slug)}
+                  className="h-9 px-4 rounded-xl text-[10px]"
+                >
+                  <FiClock className={isSaved ? "fill-purple-500 text-purple-500" : ""} />
+                  <span>{isSaved ? t("Saved") : t("Save")}</span>
                 </Button>
               </div>
 

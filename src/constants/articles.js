@@ -286,7 +286,8 @@ Nutritionists suggest that natural fruits could be used as dietary adjuvants in 
     tags: ["Guava Juice", "Hemoglobin", "Anemia", "Nutrition"],
     shareCount: 520,
     likes: 830,
-    bookmarks: 410
+    bookmarks: 410,
+    premium: true
   },
   {
     id: 12,
@@ -310,6 +311,7 @@ The benefits were driven by improvements in cardiometabolic markers, inflammatio
     tags: ["Mediterranean Diet", "Mortality", "Women's Health"],
     shareCount: 680,
     likes: 1240,
-    bookmarks: 560
+    bookmarks: 560,
+    premium: true
   }
 ];

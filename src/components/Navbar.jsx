@@ -6,11 +6,14 @@ import {
   FiChevronDown,
   FiMenu,
   FiX,
+  FiClock,
+  FiBookmark,
 } from "react-icons/fi";
 import gsap from "gsap";
 import logo from "../assets/logo.png";
 import { useTheme } from "../context/ThemeContext";
 import { useLanguage } from "../context/LanguageContext";
+import { useAuth } from "../context/AuthContext";
 import { Link } from "react-router-dom";
 import ThemeToggle from "./ThemeToggle";
 
@@ -18,10 +21,24 @@ const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { lang: activeLang, setLang: setActiveLang, t } = useLanguage();
+  const { user, isAuthenticated, logout } = useAuth();
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeItem, setActiveItem] = useState("News");
   const mobileMenuRef = useRef(null);
   const navRef = useRef(null);
+  const dropdownRef = useRef(null);
+
+  // Close dropdown on click outside
+  useEffect(() => {
+    const handleOutsideClick = (e) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
+        setIsDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleOutsideClick);
+    return () => document.removeEventListener("mousedown", handleOutsideClick);
+  }, []);
 
   // Initial entrance animation for navbar
   useEffect(() => {
@@ -181,10 +198,101 @@ const Navbar = () => {
             {/* Animated Theme Toggle */}
             <ThemeToggle />
 
-            {/* User Profile */}
-            <button className="magnetic-target hidden sm:flex w-8 h-8 rounded-xl border border-slate-200/40 dark:border-slate-800/30 text-slate-500 dark:text-slate-400 items-center justify-center hover:border-teal-500/50 hover:bg-teal-500/5 dark:hover:bg-teal-400/5 hover:text-teal-600 dark:hover:text-teal-400 transition-all duration-300 cursor-pointer bg-white/10 dark:bg-slate-900/20">
-              <FiUser size={13} />
-            </button>
+            {/* User Profile / Auth Actions */}
+            {isAuthenticated ? (
+              <div className="relative" ref={dropdownRef}>
+                <button
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                  className="magnetic-target flex w-8 h-8 rounded-xl border border-slate-200/40 dark:border-slate-800/30 text-slate-650 dark:text-slate-350 items-center justify-center hover:border-teal-500/50 hover:bg-teal-500/5 dark:hover:bg-teal-400/5 hover:text-teal-600 dark:hover:text-teal-400 transition-all duration-300 cursor-pointer bg-teal-500/10 dark:bg-teal-400/5 font-black text-xs relative overflow-hidden"
+                >
+                  {user.fullName.split(" ").map(n => n[0]).join("").slice(0, 2).toUpperCase()}
+                  {user.memberLevel === "premium" && (
+                    <span className="absolute bottom-0 right-0 w-2 h-2 bg-gradient-to-r from-amber-500 to-rose-500 rounded-full border border-white dark:border-slate-950"></span>
+                  )}
+                </button>
+
+                {/* Dropdown Menu */}
+                {isDropdownOpen && (
+                  <div className="absolute right-0 mt-3 w-56 glass-premium border border-slate-200/40 dark:border-slate-800/35 rounded-2xl shadow-2xl p-4 z-50 text-left animate-slide-up">
+                    <div className="pb-3 border-b border-slate-200/20 dark:border-slate-800/20 mb-3 flex flex-col">
+                      <span className="text-xs font-black text-slate-800 dark:text-white uppercase truncate">
+                        {user.fullName}
+                      </span>
+                      <span className="text-[8px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mt-0.5 truncate">
+                        {user.email}
+                      </span>
+                      <div className="mt-2.5">
+                        {user.memberLevel === "premium" ? (
+                          <span className="inline-block px-2 py-0.5 rounded bg-gradient-to-r from-amber-500/20 to-rose-500/20 border border-amber-500/30 text-amber-600 dark:text-amber-400 text-[8px] font-black uppercase tracking-wider">
+                            👑 Premium Member
+                          </span>
+                        ) : (
+                          <span className="inline-block px-2 py-0.5 rounded bg-slate-100 dark:bg-slate-900 border border-slate-200/50 dark:border-slate-850 text-slate-550 dark:text-slate-400 text-[8px] font-black uppercase tracking-wider">
+                            Free Member
+                          </span>
+                        )}
+                      </div>
+                    </div>
+
+                    <ul className="space-y-1 text-[9px] font-black uppercase tracking-wider text-slate-600 dark:text-slate-400">
+                      <li>
+                        <Link
+                          to="/dashboard"
+                          onClick={() => setIsDropdownOpen(false)}
+                          className="flex items-center gap-2 px-2 py-1.5 rounded-lg hover:bg-teal-500/10 hover:text-teal-650 dark:hover:text-teal-400 transition-colors"
+                        >
+                          {t("Dashboard")}
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          to="/profile"
+                          onClick={() => setIsDropdownOpen(false)}
+                          className="flex items-center gap-2 px-2 py-1.5 rounded-lg hover:bg-teal-500/10 hover:text-teal-650 dark:hover:text-teal-400 transition-colors"
+                        >
+                          {t("My Profile")}
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          to="/membership"
+                          onClick={() => setIsDropdownOpen(false)}
+                          className="flex items-center gap-2 px-2 py-1.5 rounded-lg hover:bg-teal-500/10 hover:text-teal-650 dark:hover:text-teal-400 transition-colors"
+                        >
+                          {t("Membership")}
+                        </Link>
+                      </li>
+                      <li>
+                        <button
+                          onClick={() => {
+                            setIsDropdownOpen(false);
+                            logout();
+                          }}
+                          className="w-full flex items-center gap-2 px-2 py-1.5 rounded-lg hover:bg-rose-500/10 hover:text-rose-500 transition-colors text-left font-black uppercase tracking-wider cursor-pointer"
+                        >
+                          {t("Log Out")}
+                        </button>
+                      </li>
+                    </ul>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <div className="hidden sm:flex items-center gap-2">
+                <Link
+                  to="/login"
+                  className="px-3 py-1.5 border border-slate-200/40 dark:border-slate-800/30 text-slate-700 dark:text-slate-350 hover:bg-white/20 dark:hover:bg-slate-800/20 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all duration-300"
+                >
+                  {t("Log In")}
+                </Link>
+                <Link
+                  to="/register"
+                  className="px-3 py-1.5 bg-teal-500 hover:bg-teal-450 dark:bg-teal-400 dark:hover:bg-teal-350 text-slate-950 rounded-xl text-[9px] font-black uppercase tracking-widest transition-all duration-300 shadow-md"
+                >
+                  {t("Register")}
+                </Link>
+              </div>
+            )}
           </div>
 
           {/* Mobile menu toggle button */}
@@ -281,17 +389,77 @@ const Navbar = () => {
             </div>
 
             {/* Mobile Profile Actions */}
-            <div className="mobile-menu-item border-t border-slate-200/25 dark:border-slate-800/25 pt-6 flex gap-4 justify-between items-center">
-              <div className="flex gap-4 items-center">
-                <button className="flex items-center gap-2 text-[10px] font-black tracking-widest text-slate-600 dark:text-slate-350 cursor-pointer hover:text-teal-500 dark:hover:text-teal-400 transition-colors">
-                  <FiUser size={13} />
-                  <span>MY PROFILE</span>
-                </button>
-                <button className="text-[10px] font-black tracking-widest text-slate-600 dark:text-slate-350 cursor-pointer hover:text-teal-500 dark:hover:text-teal-400 transition-colors">
-                  SETTINGS
-                </button>
+            <div className="mobile-menu-item border-t border-slate-200/25 dark:border-slate-800/25 pt-6 flex flex-col gap-4">
+              {isAuthenticated ? (
+                <>
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-xl bg-teal-500/10 dark:bg-teal-400/5 border border-slate-200/40 dark:border-slate-800/40 flex items-center justify-center font-black text-xs text-slate-750 dark:text-slate-200">
+                      {user.fullName.split(" ").map(n => n[0]).join("").slice(0, 2).toUpperCase()}
+                    </div>
+                    <div className="flex flex-col text-left">
+                      <span className="text-xs font-black text-slate-800 dark:text-white uppercase truncate">
+                        {user.fullName}
+                      </span>
+                      <span className="text-[8px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest mt-0.5 truncate">
+                        {user.memberLevel === "premium" ? "👑 Premium" : "Free Member"}
+                      </span>
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 gap-2">
+                    <Link
+                      to="/dashboard"
+                      onClick={handleMobileClose}
+                      className="px-3 py-2 text-center rounded-xl bg-white/20 dark:bg-slate-900/35 border border-slate-200/40 dark:border-slate-800/35 text-[9px] font-black uppercase tracking-widest text-slate-850 dark:text-slate-200"
+                    >
+                      {t("Dashboard")}
+                    </Link>
+                    <Link
+                      to="/profile"
+                      onClick={handleMobileClose}
+                      className="px-3 py-2 text-center rounded-xl bg-white/20 dark:bg-slate-900/35 border border-slate-200/40 dark:border-slate-800/35 text-[9px] font-black uppercase tracking-widest text-slate-850 dark:text-slate-200"
+                    >
+                      {t("Profile")}
+                    </Link>
+                    <Link
+                      to="/membership"
+                      onClick={handleMobileClose}
+                      className="px-3 py-2 text-center rounded-xl bg-white/20 dark:bg-slate-900/35 border border-slate-200/40 dark:border-slate-800/35 text-[9px] font-black uppercase tracking-widest text-slate-850 dark:text-slate-200"
+                    >
+                      {t("Membership")}
+                    </Link>
+                    <button
+                      onClick={() => {
+                        handleMobileClose();
+                        logout();
+                      }}
+                      className="px-3 py-2 text-center rounded-xl bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/30 text-[9px] font-black uppercase tracking-widest text-rose-500 cursor-pointer"
+                    >
+                      {t("Log Out")}
+                    </button>
+                  </div>
+                </>
+              ) : (
+                <div className="flex flex-col gap-2">
+                  <Link
+                    to="/login"
+                    onClick={handleMobileClose}
+                    className="w-full py-2.5 text-center border border-slate-200/45 dark:border-slate-800/30 text-slate-700 dark:text-slate-300 rounded-xl text-[9px] font-black uppercase tracking-widest"
+                  >
+                    {t("Log In")}
+                  </Link>
+                  <Link
+                    to="/register"
+                    onClick={handleMobileClose}
+                    className="w-full py-2.5 text-center bg-teal-500 text-slate-950 rounded-xl text-[9px] font-black uppercase tracking-widest"
+                  >
+                    {t("Register")}
+                  </Link>
+                </div>
+              )}
+              <div className="flex justify-between items-center mt-2 pt-2 border-t border-slate-200/25 dark:border-slate-800/25">
+                <span className="text-[9px] font-black text-slate-400 uppercase tracking-widest">{t("Toggle Theme")}</span>
+                <ThemeToggle />
               </div>
-              <ThemeToggle />
             </div>
           </div>
         </div>
