@@ -1,4 +1,27 @@
+import React from "react";
+import { BREAKING_NEWS } from "../constants/siteData";
+import { useLanguage } from "../context/LanguageContext";
+
 const BreakingNews = () => {
+  const { t } = useLanguage();
+  const renderItems = () => {
+    return BREAKING_NEWS.map((item, index) => (
+      <React.Fragment key={index}>
+        <p className="text-slate-655 dark:text-slate-300 text-[11px] font-bold tracking-wide">
+          {item.text}
+        </p>
+        <span className="text-slate-300 dark:text-slate-700">•</span>
+        <span className={`px-2.5 py-0.5 text-[8px] font-black tracking-wider rounded-md ${
+          item.type === "LIVE"
+            ? "bg-rose-500/10 text-rose-500"
+            : "bg-teal-500/10 text-teal-600 dark:text-teal-400"
+        }`}>
+          {item.type}
+        </span>
+      </React.Fragment>
+    ));
+  };
+
   return (
     <div className="mx-[5%] md:mx-[10%] mt-28 mb-4 h-12 glass-premium rounded-2xl flex items-center overflow-hidden shadow-lg shadow-teal-500/2 border border-slate-200/40 dark:border-slate-800/30">
       {/* Fixed Left Section */}
@@ -8,7 +31,7 @@ const BreakingNews = () => {
           <span className="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
         </span>
         <h2 className="text-teal-600 dark:text-teal-400 font-black text-[10px] tracking-widest uppercase font-heading">
-          Breaking
+          {t("Breaking")}
         </h2>
       </div>
 
@@ -17,58 +40,12 @@ const BreakingNews = () => {
         {/* Pause marquee on hover */}
         <div className="flex items-center whitespace-nowrap animate-marquee gap-12 hover:[animation-play-state:paused] cursor-pointer">
           <div className="flex items-center gap-8">
-            <p className="text-slate-650 dark:text-slate-300 text-[11px] font-bold tracking-wide">
-              Health guidelines released for 2026
-            </p>
-            <span className="text-slate-300 dark:text-slate-700">•</span>
-            <span className="bg-teal-500/10 text-teal-600 dark:text-teal-400 px-2.5 py-0.5 text-[8px] font-black tracking-wider rounded-md">
-              UPDATE
-            </span>
-            <p className="text-slate-650 dark:text-slate-300 text-[11px] font-bold tracking-wide">
-              AI helping doctors detect diseases faster
-            </p>
-            <span className="text-slate-300 dark:text-slate-700">•</span>
-            <span className="bg-rose-500/10 text-rose-500 px-2.5 py-0.5 text-[8px] font-black tracking-wider rounded-md">
-              LIVE
-            </span>
-            <p className="text-slate-650 dark:text-slate-300 text-[11px] font-bold tracking-wide">
-              New health guidelines released for 2026
-            </p>
-            <span className="text-slate-300 dark:text-slate-700">•</span>
-            <span className="bg-teal-500/10 text-teal-600 dark:text-teal-400 px-2.5 py-0.5 text-[8px] font-black tracking-wider rounded-md">
-              UPDATE
-            </span>
-            <p className="text-slate-650 dark:text-slate-300 text-[11px] font-bold tracking-wide">
-              WHO releases new vaccine report
-            </p>
+            {renderItems()}
           </div>
 
           {/* Duplicate for seamless infinite loop */}
           <div className="flex items-center gap-8">
-            <p className="text-slate-650 dark:text-slate-300 text-[11px] font-bold tracking-wide">
-              Health guidelines released for 2026
-            </p>
-            <span className="text-slate-300 dark:text-slate-700">•</span>
-            <span className="bg-teal-500/10 text-teal-600 dark:text-teal-400 px-2.5 py-0.5 text-[8px] font-black tracking-wider rounded-md">
-              UPDATE
-            </span>
-            <p className="text-slate-650 dark:text-slate-300 text-[11px] font-bold tracking-wide">
-              AI helping doctors detect diseases faster
-            </p>
-            <span className="text-slate-300 dark:text-slate-700">•</span>
-            <span className="bg-rose-500/10 text-rose-500 px-2.5 py-0.5 text-[8px] font-black tracking-wider rounded-md">
-              LIVE
-            </span>
-            <p className="text-slate-650 dark:text-slate-300 text-[11px] font-bold tracking-wide">
-              New health guidelines released for 2026
-            </p>
-            <span className="text-slate-300 dark:text-slate-700">•</span>
-            <span className="bg-teal-500/10 text-teal-600 dark:text-teal-400 px-2.5 py-0.5 text-[8px] font-black tracking-wider rounded-md">
-              UPDATE
-            </span>
-            <p className="text-slate-650 dark:text-slate-300 text-[11px] font-bold tracking-wide">
-              WHO releases new vaccine report
-            </p>
+            {renderItems()}
           </div>
         </div>
       </div>

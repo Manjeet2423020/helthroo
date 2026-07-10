@@ -12,11 +12,13 @@ import {
 import gsap from "gsap";
 import logo from "../assets/logo.png";
 import { useTheme } from "../context/ThemeContext";
+import { useLanguage } from "../context/LanguageContext";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [activeLang, setActiveLang] = useState("EN");
+  const { lang: activeLang, setLang: setActiveLang, t } = useLanguage();
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeItem, setActiveItem] = useState("News");
   const mobileMenuRef = useRef(null);
@@ -80,54 +82,60 @@ const Navbar = () => {
         }`}
       >
         {/* Brand logo */}
-        <div className="flex items-center">
+        <Link to="/" className="flex items-center">
           <img
             src={logo}
             className="h-9 w-auto object-contain hover:scale-105 transition-transform duration-350 cursor-pointer dark:brightness-125"
             alt="Helthro Logo"
           />
-        </div>
+        </Link>
 
         {/* Navigation Links (Desktop) */}
         <ul className="hidden lg:flex items-center gap-7 text-[10px] font-black tracking-widest text-slate-500 dark:text-slate-350 uppercase">
-          {navItems.map((item) => (
-            <li
-              key={item.name}
-              onClick={() => setActiveItem(item.name)}
-              className={`flex items-center gap-1 cursor-pointer py-2 relative group transition-colors duration-300 ${
-                activeItem === item.name
-                  ? "text-teal-600 dark:text-teal-400 font-extrabold"
-                  : "hover:text-slate-900 dark:hover:text-white"
-              }`}
-            >
-              <span>{item.name}</span>
-              {item.hasDropdown && (
-                <FiChevronDown
-                  size={10}
-                  className="opacity-70 group-hover:rotate-180 transition-transform duration-300"
-                />
-              )}
-              {/* Dynamic glide underline */}
-              <span
-                className={`absolute bottom-0 left-1/2 -translate-x-1/2 h-[2px] bg-gradient-to-r from-teal-500 to-sky-400 transition-all duration-300 ${
-                  activeItem === item.name ? "w-full" : "w-0 group-hover:w-full"
+          {navItems.map((item) => {
+            const path = item.name === "News" ? "/" : `/category/${item.name.toLowerCase()}`;
+            return (
+              <li
+                key={item.name}
+                onClick={() => setActiveItem(item.name)}
+                className={`flex items-center gap-1 cursor-pointer py-2 relative group transition-colors duration-300 ${
+                  activeItem === item.name
+                    ? "text-teal-600 dark:text-teal-400 font-extrabold"
+                    : "hover:text-slate-900 dark:hover:text-white"
                 }`}
-              ></span>
-            </li>
-          ))}
+              >
+                <Link to={path} className="flex items-center gap-1">
+                  <span>{t(item.name)}</span>
+                  {item.hasDropdown && (
+                    <FiChevronDown
+                      size={10}
+                      className="opacity-70 group-hover:rotate-180 transition-transform duration-300"
+                    />
+                  )}
+                </Link>
+                {/* Dynamic glide underline */}
+                <span
+                  className={`absolute bottom-0 left-1/2 -translate-x-1/2 h-[2px] bg-gradient-to-r from-teal-500 to-sky-400 transition-all duration-300 ${
+                    activeItem === item.name ? "w-full" : "w-0 group-hover:w-full"
+                  }`}
+                ></span>
+              </li>
+            );
+          })}
         </ul>
 
         {/* Right Actions */}
         <div className="flex items-center gap-3">
           {/* Modern Command Search bar */}
-          <div className="hidden sm:flex items-center w-44 lg:w-48 h-9 px-3 glass-premium border border-slate-200/50 dark:border-slate-800/40 rounded-xl focus-within:border-teal-500/70 dark:focus-within:border-teal-400/70 focus-within:ring-2 focus-within:ring-teal-500/10 transition-all duration-300 bg-white/20 dark:bg-slate-900/30">
+          <button
+            onClick={() => window.dispatchEvent(new CustomEvent("open-search-modal"))}
+            className="hidden sm:flex items-center w-44 lg:w-48 h-9 px-3 glass-premium border border-slate-200/50 dark:border-slate-800/40 rounded-xl hover:border-teal-500/70 dark:hover:border-teal-400/70 hover:ring-2 hover:ring-teal-500/10 transition-all duration-300 bg-white/20 dark:bg-slate-900/30 cursor-pointer text-left"
+          >
             <FiSearch className="text-slate-400 dark:text-slate-500 text-xs shrink-0" />
-            <input
-              type="text"
-              placeholder="Search (⌘K)..."
-              className="w-full ml-2 bg-transparent outline-none text-[10px] font-bold text-slate-800 dark:text-slate-200 placeholder:text-slate-400 dark:placeholder:text-slate-500 border-none"
-            />
-          </div>
+            <span className="w-full ml-2 bg-transparent text-[10px] font-black text-slate-455 dark:text-slate-455 select-none">
+              {t("Search (Ctrl+K)...")}
+            </span>
+          </button>
 
           {/* Language selector pill */}
           <div className="hidden md:flex overflow-hidden rounded-full border border-slate-200/40 dark:border-slate-800/35 bg-white/30 dark:bg-slate-900/30 p-0.5 shadow-sm">
@@ -211,27 +219,40 @@ const Navbar = () => {
 
               {/* Navigation Links */}
               <ul className="flex flex-col gap-4 text-xs font-black uppercase tracking-widest text-slate-600 dark:text-slate-300 mt-8">
-                {navItems.map((item) => (
-                  <li
-                    key={item.name}
-                    className="mobile-menu-item flex items-center justify-between cursor-pointer hover:text-teal-500 dark:hover:text-teal-400 transition-colors duration-250 py-1"
-                  >
-                    <span>{item.name}</span>
-                    {item.hasDropdown && <FiChevronDown size={11} className="opacity-70" />}
-                  </li>
-                ))}
+                {navItems.map((item) => {
+                  const path = item.name === "News" ? "/" : `/category/${item.name.toLowerCase()}`;
+                  return (
+                    <li
+                      key={item.name}
+                      onClick={() => {
+                        setActiveItem(item.name);
+                        handleMobileClose();
+                      }}
+                      className="mobile-menu-item flex items-center justify-between cursor-pointer hover:text-teal-500 dark:hover:text-teal-400 transition-colors duration-250 py-1"
+                    >
+                      <Link to={path} className="w-full flex items-center justify-between">
+                        <span>{t(item.name)}</span>
+                        {item.hasDropdown && <FiChevronDown size={11} className="opacity-70" />}
+                      </Link>
+                    </li>
+                  );
+                })}
               </ul>
 
               <div className="border-t border-slate-200/25 dark:border-slate-800/25 pt-6 mt-6 flex flex-col gap-4">
                 {/* Mobile Search */}
-                <div className="mobile-menu-item flex items-center w-full h-10 px-3 bg-white/20 dark:bg-slate-900/30 border border-slate-200/40 dark:border-slate-800/35 rounded-xl">
+                <button
+                  onClick={() => {
+                    handleMobileClose();
+                    window.dispatchEvent(new CustomEvent("open-search-modal"));
+                  }}
+                  className="mobile-menu-item flex items-center w-full h-10 px-3 bg-white/20 dark:bg-slate-900/30 border border-slate-200/40 dark:border-slate-800/35 rounded-xl cursor-pointer text-left"
+                >
                   <FiSearch className="text-slate-400 dark:text-slate-500" />
-                  <input
-                    type="text"
-                    placeholder="Search..."
-                    className="w-full ml-2 bg-transparent outline-none text-xs font-bold text-slate-800 dark:text-slate-200 placeholder:text-slate-400 dark:placeholder:text-slate-500 border-none"
-                  />
-                </div>
+                  <span className="w-full ml-2 bg-transparent text-xs font-black text-slate-450 dark:text-slate-450 select-none">
+                    {t("Search...")}
+                  </span>
+                </button>
 
                 {/* Mobile Language selector */}
                 <div className="mobile-menu-item flex rounded-xl border border-slate-200/40 dark:border-slate-800/35 bg-white/20 dark:bg-slate-900/30 p-0.5 shadow-sm">

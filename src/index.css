@@ -22,6 +22,17 @@
   100% { transform: translateX(-50%); }
 }
 
+/* Language specific typography overrides */
+.lang-en {
+  --font-sans: "Inter", system-ui, -apple-system, sans-serif;
+  --font-heading: "Outfit", system-ui, -apple-system, sans-serif;
+}
+
+.lang-hi {
+  --font-sans: "Noto Sans Devanagari", "Inter", system-ui, sans-serif;
+  --font-heading: "Noto Sans Devanagari", "Outfit", system-ui, sans-serif;
+}
+
 /* Base resets & typography */
 body {
   margin: 0;
