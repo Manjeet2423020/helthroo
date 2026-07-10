@@ -71,7 +71,7 @@ const Medical = () => {
   };
 
   return (
-    <section className="px-[5%] md:px-[10%] py-16 bg-transparent relative z-20">
+    <section className="px-[5%] md:px-[10%] py-16 bg-transparent relative z-20 gsap-reveal">
       
       {/* Background radial glow */}
       <div className="absolute top-[30%] right-[-5%] w-72 h-72 bg-emerald-500/5 dark:bg-emerald-450/2 rounded-full blur-[100px] pointer-events-none"></div>
@@ -101,7 +101,7 @@ const Medical = () => {
           <div
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
-            className="gradient-border-inner group glass-card overflow-hidden cursor-pointer shadow-lg transition-all flex flex-col h-full justify-between border-none relative"
+            className="gradient-border-inner group glass-card glow-card-shadow overflow-hidden cursor-pointer shadow-lg transition-all flex flex-col h-full justify-between border-none relative"
           >
             <div className="card-shine absolute w-[250px] h-[250px] bg-white rounded-full blur-3xl pointer-events-none opacity-0 transition-opacity duration-300 z-15"></div>
             <div>

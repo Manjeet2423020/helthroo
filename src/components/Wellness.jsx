@@ -41,7 +41,7 @@ const Wellness = () => {
   };
 
   return (
-    <section className="px-[5%] md:px-[10%] py-16 bg-transparent relative z-20 overflow-hidden">
+    <section className="px-[5%] md:px-[10%] py-16 bg-transparent relative z-20 overflow-hidden gsap-reveal">
       
       {/* Organic Background Leaf Silhouette Shapes */}
       <div className="absolute top-[10%] right-[-5%] w-72 h-72 bg-emerald-500/5 dark:bg-emerald-400/2 rounded-full blur-3xl pointer-events-none z-0"></div>
@@ -89,7 +89,7 @@ const Wellness = () => {
             <div
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
-              className="gradient-border-inner group glass-card p-6 border-none cursor-pointer shadow-lg relative transition-all duration-350"
+              className="gradient-border-inner group glass-card glow-card-shadow p-6 border-none cursor-pointer shadow-lg relative transition-all duration-350"
             >
               <div className="card-shine absolute w-[250px] h-[250px] bg-white rounded-full blur-3xl pointer-events-none opacity-0 transition-opacity duration-300 z-15"></div>
               
@@ -124,7 +124,7 @@ const Wellness = () => {
             <div
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
-              className="gradient-border-inner group glass-card p-6 border-none cursor-pointer shadow-lg relative transition-all duration-350"
+              className="gradient-border-inner group glass-card glow-card-shadow p-6 border-none cursor-pointer shadow-lg relative transition-all duration-350"
             >
               <div className="card-shine absolute w-[250px] h-[250px] bg-white rounded-full blur-3xl pointer-events-none opacity-0 transition-opacity duration-300 z-15"></div>
               
@@ -170,7 +170,7 @@ const Wellness = () => {
             <div
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
-              className="gradient-border-inner group glass-card p-6 border-none cursor-pointer shadow-lg relative transition-all duration-350"
+              className="gradient-border-inner group glass-card glow-card-shadow p-6 border-none cursor-pointer shadow-lg relative transition-all duration-350"
             >
               <div className="card-shine absolute w-[250px] h-[250px] bg-white rounded-full blur-3xl pointer-events-none opacity-0 transition-opacity duration-300 z-15"></div>
               

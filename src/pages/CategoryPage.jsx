@@ -21,7 +21,7 @@ const CategoryPage = () => {
   );
 
   return (
-    <Container className="py-12">
+    <Container className="py-12 gsap-reveal">
       {/* Back link */}
       <Link
         to="/"

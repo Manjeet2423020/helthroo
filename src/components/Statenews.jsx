@@ -58,7 +58,7 @@ const StateNews = () => {
   };
 
   return (
-    <section className="px-[5%] md:px-[10%] py-16 bg-transparent relative z-20">
+    <section className="px-[5%] md:px-[10%] py-16 bg-transparent relative z-20 gsap-reveal">
       
       {/* Heading */}
       <div className="flex justify-between items-end border-b border-slate-200/40 dark:border-slate-800/30 pb-6">

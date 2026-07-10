@@ -93,7 +93,7 @@ const ArticleDetail = () => {
         ></div>
       </div>
 
-      <Container className="py-12">
+      <Container className="py-12 gsap-reveal">
         {/* Back Link */}
         <Link
           to="/"
@@ -329,7 +329,7 @@ const ArticleDetail = () => {
               subtitle={t("Read more related articles on this subject.")}
               highlightColor="bg-teal-500/15 dark:bg-teal-500/10"
             />
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mt-8 gsap-reveal">
               {relatedArticles.map((item) => (
                 <Card key={item.id} article={item} />
               ))}

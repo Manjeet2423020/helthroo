@@ -55,7 +55,7 @@ const Podcast = () => {
   };
 
   return (
-    <section className="mx-[5%] md:mx-[10%] my-16 bg-[#030712] text-white rounded-[32px] p-8 md:p-12 border border-slate-800/80 shadow-premium relative overflow-hidden z-20">
+    <section className="mx-[5%] md:mx-[10%] my-16 bg-[#030712] text-white rounded-[32px] p-8 md:p-12 border border-slate-800/80 shadow-premium relative overflow-hidden z-20 gsap-reveal">
       
       {/* Background visual neon nodes */}
       <div className="absolute top-[-30%] right-[-10%] w-96 h-96 bg-teal-500/10 rounded-full blur-[100px] pointer-events-none"></div>

@@ -50,7 +50,7 @@ const Home = () => {
       <Hero />
 
       {/* 2. Featured & Trending Split Section */}
-      <Container className="py-12 border-t border-slate-200/40 dark:border-slate-800/20">
+      <Container className="py-12 border-t border-slate-200/40 dark:border-slate-800/20 gsap-reveal">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
           
           {/* Featured News Grid (8 Columns) */}
@@ -86,7 +86,7 @@ const Home = () => {
       </Container>
 
       {/* 3. Editor's Picks Section */}
-      <div className="w-full bg-slate-100/50 dark:bg-[#070b16]/40 py-16 border-y border-slate-200/40 dark:border-slate-850/40">
+      <div className="w-full bg-slate-100/50 dark:bg-[#070b16]/40 py-16 border-y border-slate-200/40 dark:border-slate-850/40 gsap-reveal">
         <Container>
           <SectionTitle
             title={t("Editor's Picks")}
@@ -106,7 +106,7 @@ const Home = () => {
       <Container className="py-16 space-y-16">
         
         {/* Wellness Insights */}
-        <div>
+        <div className="gsap-reveal">
           <SectionTitle
             title={t("Wellness Insights")}
             subtitle={t("Nutrition, mindfulness, and everyday habit scheduling.")}
@@ -125,7 +125,7 @@ const Home = () => {
         </div>
 
         {/* Clinical Health */}
-        <div>
+        <div className="gsap-reveal">
           <SectionTitle
             title={t("Clinical Health")}
             subtitle={t("Pathology reviews, diagnostic guides, and vaccination updates.")}
@@ -146,7 +146,7 @@ const Home = () => {
       </Container>
 
       {/* 5. Latest Articles Section (with dynamic paging load-more) */}
-      <div className="w-full bg-slate-100/50 dark:bg-[#070b16]/40 py-16 border-t border-slate-200/40 dark:border-slate-850/40">
+      <div className="w-full bg-slate-100/50 dark:bg-[#070b16]/40 py-16 border-t border-slate-200/40 dark:border-slate-850/40 gsap-reveal">
         <Container>
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
             

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Lenis from "lenis";
@@ -27,9 +27,30 @@ const PARTICLES = [
 
 const MainLayout = () => {
   const containerRef = useRef(null);
+  const pageWrapperRef = useRef(null);
+  const { pathname } = useLocation();
 
   useEffect(() => {
-    // Initialize Lenis smooth scroll
+    // 1. Scroll progress bar animation
+    const progressTrigger = gsap.to("#scroll-progress", {
+      width: "100%",
+      ease: "none",
+      scrollTrigger: {
+        trigger: document.documentElement,
+        start: "top top",
+        end: "bottom bottom",
+        scrub: true,
+      },
+    });
+
+    // 2. Page transition animation (fade-in & slide-up)
+    gsap.fromTo(
+      pageWrapperRef.current,
+      { opacity: 0, y: 15 },
+      { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" }
+    );
+
+    // 3. Initialize Lenis smooth scroll
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -44,7 +65,7 @@ const MainLayout = () => {
     gsap.ticker.add(updateTicker);
     gsap.ticker.lagSmoothing(0);
 
-    // Global ScrollTrigger entrance reveals
+    // 4. Global ScrollTrigger entrance reveals (only triggers once per item on enter)
     const reveals = containerRef.current?.querySelectorAll(".gsap-reveal");
     if (reveals && reveals.length > 0) {
       reveals.forEach((el) => {
@@ -52,18 +73,18 @@ const MainLayout = () => {
           el,
           {
             opacity: 0,
-            y: 60,
+            y: 50,
             scale: 0.98,
           },
           {
             opacity: 1,
             y: 0,
             scale: 1,
-            duration: 1.2,
-            ease: "power3.out",
+            duration: 1.0,
+            ease: "power2.out",
             scrollTrigger: {
               trigger: el,
-              start: "top 90%",
+              start: "top 88%",
               toggleActions: "play none none none",
             },
           }
@@ -71,7 +92,7 @@ const MainLayout = () => {
       });
     }
 
-    // Global Magnetic targets hover effect
+    // 5. Global Magnetic targets hover effect
     const setupMagnetic = () => {
       const targets = document.querySelectorAll(".magnetic-target");
       targets.forEach((target) => {
@@ -96,10 +117,14 @@ const MainLayout = () => {
           });
         };
 
+        // Clean up pre-existing listeners first to avoid duplication
+        if (target._cleanupMagnetic) {
+          target._cleanupMagnetic();
+        }
+
         target.addEventListener("mousemove", onMouseMove);
         target.addEventListener("mouseleave", onMouseLeave);
 
-        // Save reference to clean up
         target._cleanupMagnetic = () => {
           target.removeEventListener("mousemove", onMouseMove);
           target.removeEventListener("mouseleave", onMouseLeave);
@@ -107,13 +132,14 @@ const MainLayout = () => {
       });
     };
 
-    // Delay slightly to ensure children elements are rendered
+    // Delay slightly to ensure layout rendering completed
     const timeoutId = setTimeout(setupMagnetic, 300);
 
     return () => {
       clearTimeout(timeoutId);
       lenis.destroy();
       gsap.ticker.remove(updateTicker);
+      progressTrigger.kill();
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
       
       const targets = document.querySelectorAll(".magnetic-target");
@@ -123,7 +149,7 @@ const MainLayout = () => {
         }
       });
     };
-  }, []);
+  }, [pathname]);
 
   return (
     <div 
@@ -164,13 +190,18 @@ const MainLayout = () => {
         ))}
       </div>
 
+      {/* Top Fixed Scroll Progress Bar */}
+      <div className="fixed top-0 left-0 w-full h-[3px] bg-transparent z-[100] pointer-events-none">
+        <div id="scroll-progress" className="h-full bg-gradient-to-r from-teal-500 via-sky-400 to-teal-500 w-0"></div>
+      </div>
+
       {/* Main Page Layout Wrapper */}
       <div className="relative z-10 flex flex-col min-h-screen">
         <Navbar />
         <BreakingNews />
         
         {/* Main Content Area */}
-        <main className="flex-grow pt-4">
+        <main ref={pageWrapperRef} className="flex-grow pt-4">
           <Outlet />
         </main>
         

@@ -29,7 +29,7 @@ const ShortVideo = () => {
   };
 
   return (
-    <section className="px-[5%] md:px-[10%] py-16 bg-transparent relative z-20">
+    <section className="px-[5%] md:px-[10%] py-16 bg-transparent relative z-20 gsap-reveal">
       
       {/* Background radial glow */}
       <div className="absolute top-[20%] left-[-5%] w-72 h-72 bg-teal-500/5 dark:bg-teal-400/2 rounded-full blur-[100px] pointer-events-none"></div>

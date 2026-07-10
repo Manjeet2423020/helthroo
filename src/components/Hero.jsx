@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 import { ARTICLES } from "../constants/articles";
 import { useLanguage } from "../context/LanguageContext";
 import NewsCard from "./NewsCard";
+import gsap from "gsap";
+import TextReveal from "./TextReveal";
 
 const AQI_DATA = {
   Delhi: { aqi: 142, status: "Moderate", color: "text-amber-500 bg-amber-500/5 border-amber-500/20", tip: "Sensitive groups should wear masks outdoors." },
@@ -35,6 +37,46 @@ const Hero = () => {
     }, 6000);
     return () => clearInterval(interval);
   }, [sliderArticles.length]);
+
+  // Entrance animations timeline
+  useEffect(() => {
+    const tl = gsap.timeline({ delay: 0.1 });
+    
+    gsap.set([".hero-float-badge", ".hero-desc", ".hero-slider", ".hero-grid", ".hero-bottom"], {
+      opacity: 0,
+      y: 20
+    });
+
+    tl.to(".hero-float-badge", {
+      opacity: 1,
+      y: 0,
+      duration: 0.5,
+      ease: "power2.out"
+    })
+    .to(".hero-desc", {
+      opacity: 1,
+      y: 0,
+      duration: 0.5,
+      ease: "power2.out"
+    }, "-=0.35")
+    .to([".hero-slider", ".hero-grid"], {
+      opacity: 1,
+      y: 0,
+      duration: 0.6,
+      stagger: 0.15,
+      ease: "power2.out"
+    }, "-=0.2")
+    .to(".hero-bottom", {
+      opacity: 1,
+      y: 0,
+      duration: 0.6,
+      ease: "power2.out"
+    }, "-=0.3");
+
+    return () => {
+      tl.kill();
+    };
+  }, []);
 
   const handleVote = (option) => {
     if (voted) return;
@@ -90,12 +132,12 @@ const Hero = () => {
 
           {/* Huge typography header */}
           <h1 className="text-4xl sm:text-5xl lg:text-7xl font-black tracking-tight text-slate-900 dark:text-white leading-[1.05] font-heading">
-            {t("IMPACTING")} <br />
-            <span className="text-gradient-cyan">{t("GLOBAL HEALTH")}</span>
+            <TextReveal text={t("IMPACTING")} /> <br />
+            <TextReveal text={t("GLOBAL HEALTH")} delay={0.15} wordClassName="text-gradient-cyan" />
           </h1>
         </div>
 
-        <p className="text-slate-500 dark:text-slate-400 text-xs md:text-sm font-semibold max-w-md leading-relaxed border-l-2 border-teal-500/40 pl-4 py-1">
+        <p className="hero-desc text-slate-500 dark:text-slate-400 text-xs md:text-sm font-semibold max-w-md leading-relaxed border-l-2 border-teal-500/40 pl-4 py-1">
           {t("Hero Description")}
         </p>
       </div>
@@ -104,7 +146,7 @@ const Hero = () => {
       <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 relative z-10">
         
         {/* Left Columns - Hero Slider */}
-        <div className="lg:col-span-8 group relative rounded-3xl shimmer-border shadow-2xl h-[540px]">
+        <div className="hero-slider lg:col-span-8 group relative rounded-3xl shimmer-border shadow-2xl h-[540px]">
           {sliderArticles.map((slide, index) => {
             const isActive = index === sliderIndex;
             return (
@@ -163,7 +205,7 @@ const Hero = () => {
         </div>
 
         {/* Right Columns - 2x2 Grid from mock database using map() */}
-        <div className="lg:col-span-4 grid grid-cols-2 gap-4 h-[540px]">
+        <div className="hero-grid lg:col-span-4 grid grid-cols-2 gap-4 h-[540px]">
           {gridArticles.map((article) => (
             <div
               key={article.id}
@@ -193,7 +235,7 @@ const Hero = () => {
       </div>
 
       {/* Hero Bottom - Columns: Spotlight, Recommended Reads, Widgets */}
-      <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 mt-12 relative z-10">
+      <div className="hero-bottom max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 mt-12 relative z-10">
         
         {/* Left Column: Spotlight News (5 Cols) */}
         <div

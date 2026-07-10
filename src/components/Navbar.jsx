@@ -2,8 +2,6 @@ import { useState, useEffect, useRef } from "react";
 import {
   FiSearch,
   FiSettings,
-  FiMoon,
-  FiSun,
   FiUser,
   FiChevronDown,
   FiMenu,
@@ -14,6 +12,7 @@ import logo from "../assets/logo.png";
 import { useTheme } from "../context/ThemeContext";
 import { useLanguage } from "../context/LanguageContext";
 import { Link } from "react-router-dom";
+import ThemeToggle from "./ThemeToggle";
 
 const Navbar = () => {
   const { theme, toggleTheme } = useTheme();
@@ -22,6 +21,16 @@ const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [activeItem, setActiveItem] = useState("News");
   const mobileMenuRef = useRef(null);
+  const navRef = useRef(null);
+
+  // Initial entrance animation for navbar
+  useEffect(() => {
+    gsap.fromTo(
+      navRef.current,
+      { y: -100, xPercent: -50, opacity: 0 },
+      { y: 0, xPercent: -50, opacity: 1, duration: 1.0, ease: "power4.out", delay: 0.1 }
+    );
+  }, []);
 
   const navItems = [
     { name: "News", hasDropdown: true },
@@ -75,6 +84,7 @@ const Navbar = () => {
   return (
     <>
       <nav
+        ref={navRef}
         className={`fixed top-0 left-1/2 -translate-x-1/2 z-50 w-[95%] lg:w-[90%] max-w-7xl px-6 md:px-8 flex items-center justify-between transition-all duration-500 rounded-2xl ${
           isScrolled
             ? "h-16 glass-premium mt-3 shadow-xl shadow-slate-900/5 dark:shadow-black/20"
@@ -168,18 +178,8 @@ const Navbar = () => {
               <FiSettings size={13} />
             </button>
 
-            {/* Theme toggler */}
-            <button
-              onClick={toggleTheme}
-              className="magnetic-target w-8 h-8 rounded-xl border border-slate-200/40 dark:border-slate-800/30 text-slate-500 dark:text-slate-400 flex items-center justify-center hover:border-teal-500/50 hover:bg-teal-500/5 dark:hover:bg-teal-400/5 hover:text-teal-600 dark:hover:text-teal-400 transition-all duration-300 cursor-pointer bg-white/10 dark:bg-slate-900/20"
-              title={theme === "light" ? "Switch to Dark Mode" : "Switch to Light Mode"}
-            >
-              {theme === "light" ? (
-                <FiMoon size={13} />
-              ) : (
-                <FiSun size={13} className="text-amber-400" />
-              )}
-            </button>
+            {/* Animated Theme Toggle */}
+            <ThemeToggle />
 
             {/* User Profile */}
             <button className="magnetic-target hidden sm:flex w-8 h-8 rounded-xl border border-slate-200/40 dark:border-slate-800/30 text-slate-500 dark:text-slate-400 items-center justify-center hover:border-teal-500/50 hover:bg-teal-500/5 dark:hover:bg-teal-400/5 hover:text-teal-600 dark:hover:text-teal-400 transition-all duration-300 cursor-pointer bg-white/10 dark:bg-slate-900/20">
@@ -282,13 +282,16 @@ const Navbar = () => {
 
             {/* Mobile Profile Actions */}
             <div className="mobile-menu-item border-t border-slate-200/25 dark:border-slate-800/25 pt-6 flex gap-4 justify-between items-center">
-              <button className="flex items-center gap-2 text-[10px] font-black tracking-widest text-slate-600 dark:text-slate-350 cursor-pointer hover:text-teal-500 dark:hover:text-teal-400 transition-colors">
-                <FiUser size={13} />
-                <span>MY PROFILE</span>
-              </button>
-              <button className="text-[10px] font-black tracking-widest text-slate-600 dark:text-slate-350 cursor-pointer hover:text-teal-500 dark:hover:text-teal-400 transition-colors">
-                SETTINGS
-              </button>
+              <div className="flex gap-4 items-center">
+                <button className="flex items-center gap-2 text-[10px] font-black tracking-widest text-slate-600 dark:text-slate-350 cursor-pointer hover:text-teal-500 dark:hover:text-teal-400 transition-colors">
+                  <FiUser size={13} />
+                  <span>MY PROFILE</span>
+                </button>
+                <button className="text-[10px] font-black tracking-widest text-slate-600 dark:text-slate-350 cursor-pointer hover:text-teal-500 dark:hover:text-teal-400 transition-colors">
+                  SETTINGS
+                </button>
+              </div>
+              <ThemeToggle />
             </div>
           </div>
         </div>

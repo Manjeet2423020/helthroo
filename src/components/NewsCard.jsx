@@ -70,7 +70,7 @@ const NewsCard = ({ article, variant = "grid", className = "" }) => {
         <div
           onMouseMove={handleMouseMove}
           onMouseLeave={handleMouseLeave}
-          className="gradient-border-inner group glass-card p-6 border-none cursor-pointer shadow-lg relative transition-all duration-350 flex flex-col justify-between h-full min-h-[460px]"
+          className="gradient-border-inner group glass-card glow-card-shadow p-6 border-none cursor-pointer shadow-lg relative transition-all duration-350 flex flex-col justify-between h-full min-h-[460px]"
         >
           <div className="card-shine absolute w-[300px] h-[300px] bg-white rounded-full blur-3xl pointer-events-none opacity-0 transition-opacity duration-300 z-15"></div>
           
@@ -177,7 +177,7 @@ const NewsCard = ({ article, variant = "grid", className = "" }) => {
       <div
         onMouseMove={handleMouseMove}
         onMouseLeave={handleMouseLeave}
-        className="gradient-border-inner group glass-card p-6 border-none cursor-pointer shadow-lg relative transition-all duration-350 flex flex-col justify-between h-full"
+        className="gradient-border-inner group glass-card glow-card-shadow p-6 border-none cursor-pointer shadow-lg relative transition-all duration-350 flex flex-col justify-between h-full"
       >
         <div className="card-shine absolute w-[250px] h-[250px] bg-white rounded-full blur-3xl pointer-events-none opacity-0 transition-opacity duration-300 z-15"></div>
 
